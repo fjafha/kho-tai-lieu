@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Repository & Ôn Thi Trực Tuyến</title>
+    <!-- Google Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-main: #0b0f17;
+            --bg-card: rgba(22, 30, 46, 0.7);
+            --bg-card-hover: rgba(30, 41, 59, 0.8);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(56, 189, 248, 0.3);
+            --primary: #38bdf8;
+            --primary-glow: rgba(56, 189, 248, 0.15);
+            --accent: #f59e0b;
+            --accent-glow: rgba(245, 158, 11, 0.15);
+            --text-title: #f8fafc;
+            --text-body: #94a3b8;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-title); display: flex; min-height: 100vh; overflow-x: hidden; }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        /* SIDEBAR MODERN */
+        aside { 
+            width: var(--sidebar-width); 
+            background: #0f172a; 
+            border-right: 1px solid var(--border); 
+            display: flex; 
+            flex-direction: column; 
+            position: fixed; 
+            height: 100vh; 
+            z-index: 20; 
+        }
+        .logo-area { 
+            padding: 24px 20px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            border-bottom: 1px solid var(--border); 
+        }
+        .logo-icon { 
+            width: 40px; 
+            height: 40px; 
+            background: linear-gradient(135deg, #38bdf8, #3b82f6); 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+        .logo-text h2 { font-size: 1.05rem; font-weight: 800; letter-spacing: -0.3px; color: #fff; }
+        .logo-text span { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .menu-list { padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex: 1; overflow-y: auto; }
+        .menu-title { font-size: 0.7rem; text-transform: uppercase; color: var(--text-muted); padding: 12px 12px 6px 12px; font-weight: 700; letter-spacing: 0.8px; }
+        .menu-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            padding: 11px 14px; 
+            border-radius: 10px; 
+            color: var(--text-body); 
+            text-decoration: none; 
+            font-size: 0.88rem; 
+            font-weight: 600; 
+            transition: all 0.2s ease; 
+            cursor: pointer;
+        }
+        .menu-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+        .menu-item.active { background: var(--primary-glow); color: var(--primary); border: 1px solid var(--border-highlight); }
+        .menu-item i { width: 18px; height: 18px; }
+
+        /* MAIN CONTENT */
+        main { flex: 1; margin-left: var(--sidebar-width); display: flex; flex-direction: column; min-width: 0; }
+
+        /* HEADER GLASSMOPRHISM */
+        header { 
+            height: 72px; 
+            background: rgba(15, 23, 42, 0.75); 
+            backdrop-filter: blur(12px); 
+            border-bottom: 1px solid var(--border); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 32px; 
+            position: sticky; 
+            top: 0; 
+            z-index: 10; 
+        }
+        .search-box { 
+            display: flex; 
+            align-items: center; 
+            background: rgba(30, 41, 59, 0.6); 
+            border-radius: 10px; 
+            padding: 8px 16px; 
+            width: 340px; 
+            border: 1px solid var(--border); 
+            transition: all 0.2s;
+        }
+        .search-box:focus-within { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+        .search-box input { border: none; background: transparent; outline: none; width: 100%; font-size: 0.88rem; margin-left: 10px; color: #fff; }
+        
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        .btn-vip-top { 
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.1)); 
+            color: #fbbf24; 
+            border: 1px solid rgba(245, 158, 11, 0.4); 
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            font-size: 0.85rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            transition: all 0.2s; 
+        }
+        .btn-vip-top:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-glow); background: rgba(245, 158, 11, 0.25); }
+        
+        .user-profile { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            cursor: pointer; 
+            padding: 6px 14px 6px 8px; 
+            border-radius: 30px; 
+            background: rgba(30, 41, 59, 0.6); 
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+        .user-profile:hover { border-color: var(--primary); background: rgba(30, 41, 59, 0.9); }
+        .user-avatar { 
+            width: 32px; 
+            height: 32px; 
+            background: linear-gradient(135deg, #38bdf8, #3b82f6); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+        }
+
+        /* CONTENT BODY */
+        .content-body { padding: 32px; display: flex; flex-direction: column; gap: 28px; max-width: 1280px; width: 100%; margin: 0 auto; }
+
+        /* HERO BANNER */
+        .banner { 
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); 
+            border: 1px solid var(--border);
+            border-radius: 16px; 
+            padding: 32px; 
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .banner h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; color: #fff; }
+        .banner p { color: var(--text-body); font-size: 0.92rem; max-width: 600px; line-height: 1.6; }
+
+        /* GRID LAYOUT */
+        .grid-container { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+        @media (max-width: 1024px) { body { display: block; } aside { display: none; } main { margin-left: 0; } .grid-container { grid-template-columns: 1fr; } }
+
+        .section-card { 
+            background: var(--bg-card); 
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border); 
+            border-radius: 16px; 
+            padding: 24px; 
+        }
+        .section-card h3 { 
+            font-size: 1.05rem; 
+            font-weight: 700;
+            margin-bottom: 18px; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            color: #fff; 
+        }
+
+        /* KHU VỰC CHUẨN BỊ SCROLL CHO DANH SÁCH ĐỀ DÀI */
+        .scrollable-doc-list {
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        /* DOCUMENT ITEM MODERN */
+        .doc-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 16px; 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            margin-bottom: 12px; 
+            transition: all 0.25s ease; 
+            background: rgba(15, 23, 42, 0.4); 
+        }
+        .doc-item:hover { 
+            border-color: var(--border-highlight); 
+            background: var(--bg-card-hover);
+            transform: translateX(4px); 
+        }
+        .doc-info { display: flex; flex-direction: column; gap: 4px; }
+        .doc-info h4 { font-size: 0.92rem; font-weight: 600; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
+        .doc-info p { font-size: 0.78rem; color: var(--text-muted); }
+        
+        .badge { font-size: 0.68rem; padding: 3px 8px; border-radius: 6px; font-weight: 700; letter-spacing: 0.3px; }
+        .badge-free { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .badge-vip { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+
+        .btn-action { 
+            padding: 8px 16px; 
+            border-radius: 8px; 
+            font-size: 0.82rem; 
+            font-weight: 700; 
+            cursor: pointer; 
+            border: none; 
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-download { background: var(--primary); color: #0f172a; }
+        .btn-download:hover { background: #7dd3fc; box-shadow: 0 0 12px var(--primary-glow); }
+        .btn-locked { background: rgba(30, 41, 59, 0.8); color: var(--text-muted); border: 1px solid var(--border); cursor: pointer; }
+        .btn-locked:hover { color: #f1f5f9; border-color: var(--border-highlight); }
+        .btn-pending { background: rgba(30, 41, 59, 0.4); color: #64748b; border: 1px dashed var(--border); cursor: pointer; }
+        .btn-pending:hover { color: #94a3b8; border-color: #475569; }
+
+        /* ZALO & FACEBOOK CARD */
+        .zalo-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(15, 23, 42, 0.6));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            position: sticky;
+            top: 96px;
+        }
+
+        /* MODAL MODERN SLIDE-UP */
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background: rgba(3, 7, 18, 0.75); 
+            backdrop-filter: blur(8px); 
+            z-index: 100; 
+            align-items: center; 
+            justify-content: center; 
+            animation: fadeIn 0.2s ease;
+        }
+        .modal-content { 
+            background: #0f172a; 
+            border: 1px solid var(--border-highlight); 
+            padding: 28px; 
+            border-radius: 20px; 
+            width: 90%; 
+            max-width: 420px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+            animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h3 { font-size: 1.15rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+        
+        .modal-body p { font-size: 0.85rem; color: var(--text-body); margin-bottom: 16px; line-height: 1.5; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+        
+        .modal-input { 
+            width: 100%; 
+            padding: 12px 14px; 
+            background: rgba(30, 41, 59, 0.6); 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            font-size: 0.92rem; 
+            color: #fff; 
+            outline: none; 
+            transition: all 0.2s;
+        }
+        .modal-input:focus { border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 10px; }
+        .btn-cancel { background: transparent; color: var(--text-muted); border: 1px solid var(--border); padding: 9px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .btn-cancel:hover { color: #fff; }
+        .btn-confirm { background: var(--primary); color: #0f172a; padding: 9px 20px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; }
+        .btn-confirm:hover { background: #7dd3fc; }
+
+        /* MUSIC PLAYER FLOATING */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        .music-info { display: flex; flex-direction: column; gap: 2px; }
+        .music-title { font-size: 0.78rem; font-weight: 700; color: #fff; }
+        .music-sub { font-size: 0.68rem; color: var(--text-muted); }
+        .btn-play {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #0f172a;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-play:hover { transform: scale(1.08); }
+
+        /* TOAST NOTIFICATION */
+        .toast-notification {
+            position: fixed;
+            bottom: -100px;
+            left: 30px;
+            z-index: 200;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            padding: 12px 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .toast-notification.show {
+            bottom: 25px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .toast-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .toast-body { display: flex; flex-direction: column; gap: 2px; }
+        .toast-title { font-size: 0.85rem; font-weight: 700; color: #fff; }
+        .toast-desc { font-size: 0.75rem; color: var(--text-muted); }
+        .toast-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-left: 8px;
+        }
+        .toast-close:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <aside>
+        <div class="logo-area">
+            <div class="logo-icon"><i data-lucide="layers"></i></div>
+            <div class="logo-text">
+                <h2>STUDENT REPO</h2>
+                <span>LMS Repository</span>
+            </div>
+        </div>
+        <div class="menu-list">
+            <div class="menu-title">Menu Chính</div>
+            <a href="#" class="menu-item active"><i data-lucide="home"></i> Trang Chủ</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Khóa Học Đang Bảo Trì', 'Hệ thống đang nâng cấp khóa học, quay lại sau!')"><i data-lucide="book-open"></i> Khóa Học (Bảo trì)</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Luyện Đề Đang Bảo Trì', 'Tính năng thi thử trực tuyến đang được xây dựng!')"><i data-lucide="brain-circuit"></i> Luyện Đề (Bảo trì)</a>
+            
+            <div class="menu-title">Hệ Thống</div>
+            <a class="menu-item" onclick="openVipModal()"><i data-lucide="key"></i> Kích Hoạt Key VIP</a>
+            <a class="menu-item" onclick="openLoginModal()"><i data-lucide="user"></i> Tài Khoản</a>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main>
+        <!-- HEADER -->
+        <header>
+            <div class="search-box">
+                <i data-lucide="search" style="width: 18px; color: var(--text-muted);"></i>
+                <input type="text" placeholder="Tìm đề thi, tài liệu, video bài giảng...">
+            </div>
+            <div class="header-actions">
+                <button class="btn-vip-top" onclick="openVipModal()">
+                    <i data-lucide="sparkles" style="width: 16px;"></i> Nhập Key VIP
+                </button>
+                <div class="user-profile" onclick="openLoginModal()">
+                    <div class="user-avatar" id="userAvatarIcon">S</div>
+                    <span id="userNameDisplay" style="font-size: 0.85rem; font-weight: 700; color: #f1f5f9;">Học Viên</span>
+                    <i data-lucide="chevron-down" style="width: 14px; color: var(--text-muted);"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="content-body">
+            <!-- BANNER -->
+            <div class="banner">
+                <h2>Kỷ Luật Tạo Nên Sức Mạnh — Bứt Phá Mọi Giới Hạn</h2>
+                <p>Tổng hợp đề thi ôn luyện, tài liệu nâng cao và bài giảng video chất lượng. Tự học chủ động, nâng tầm điểm số.</p>
+            </div>
+
+            <div class="grid-container">
+                <!-- LEFT CONTENT -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    
+                    <!-- 30 ĐỀ THI MIỄN PHÍ -->
+                    <div class="section-card">
+                        <h3><i data-lucide="file-text" style="color: var(--primary);"></i> Tài Liệu & Đề Thi Miễn Phí (30 Đề)</h3>
+                        <div class="doc-list scrollable-doc-list" id="freeDocList">
+                            <!-- Đề Free 1 (Đã có sẵn link) -->
+                            <div class="doc-item">
+                                <div class="doc-info">
+                                    <h4>Đề Ôn Tập Số 1 - Môn Toán <span class="badge badge-free">FREE</span></h4>
+                                    <p>PDF • Tải xuống và xem tự do</p>
+                                </div>
+                                <a href="THAY_LINK_DRIVE_FREE" target="_blank" class="btn-action btn-download">
+                                    <i data-lucide="download" style="width: 14px;"></i> Tải Đề
+                                </a>
+                            </div>
+                            <!-- Các Đề Free 2 -> 30 tự động sinh qua JS -->
+                        </div>
+                    </div>
+
+                    <!-- 20 ĐỀ THI VIP -->
+                    <div class="section-card" style="border-color: rgba(245, 158, 11, 0.3);">
+                        <h3><i data-lucide="lock" style="color: var(--accent);"></i> Kho Tài Liệu & Bài Giảng VIP (20 Đề)</h3>
+                        <div class="doc-list scrollable-doc-list" id="vipDocList">
+                            <!-- Đề VIP 1 (Cần Key VIP) -->
+                            <div class="doc-item">
+                                <div class="doc-info">
+                                    <h4>Đề Ôn Tập Đặc Biệt - Số 1 <span class="badge badge-vip">VIP KEY</span></h4>
+                                    <p>PDF • Đã mã hóa bảo vệ nội dung</p>
+                                </div>
+                                <button class="btn-action btn-locked" id="vipBtn1" onclick="checkVipAccess('THAY_LINK_DRIVE_VIP_1')">
+                                    <i data-lucide="lock" style="width: 14px;"></i> Khóa Key
+                                </button>
+                            </div>
+                            <!-- Các Đề VIP 2 -> 20 tự động sinh qua JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- RIGHT CONTENT: HỖ TRỢ ZALO & FACEBOOK -->
+                <div>
+                    <div class="zalo-card">
+                        <h3 style="font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="headset" style="color: var(--accent);"></i> Hỗ Trợ & Nhận Key VIP
+                        </h3>
+                        <p style="font-size: 0.82rem; color: var(--text-body); line-height: 1.5; margin-bottom: 16px;">
+                            Liên hệ Admin qua Zalo hoặc Facebook để mua/nhận Key VIP mở khóa trọn bộ tài liệu.
+                        </p>
+                        
+                        <!-- NÚT ZALO -->
+                        <a href="https://zalo.me/0866702086" target="_blank" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); padding: 10px 14px; border-radius: 12px; margin-bottom: 10px; transition: all 0.2s;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i data-lucide="message-circle" style="color: #38bdf8; width: 18px;"></i>
+                                <div>
+                                    <span style="font-size: 0.7rem; color: var(--text-muted); display: block; font-weight: 700;">ZALO ADMIN</span>
+                                    <strong style="font-size: 0.95rem; color: #fff;">0866702086</strong>
+                                </div>
+                            </div>
+                            <i data-lucide="external-link" style="width: 14px; color: var(--text-muted);"></i>
+                        </a>
+
+                        <!-- NÚT FACEBOOK -->
+                        <a href="LINK_FACEBOOK_CUA_BAN" target="_blank" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(59, 130, 246, 0.3); padding: 10px 14px; border-radius: 12px; margin-bottom: 16px; transition: all 0.2s;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <i data-lucide="facebook" style="color: #3b82f6; width: 18px;"></i>
+                                <div>
+                                    <span style="font-size: 0.7rem; color: var(--text-muted); display: block; font-weight: 700;">FACEBOOK</span>
+                                    <strong style="font-size: 0.95rem; color: #fff;">Admin Facebook</strong>
+                                </div>
+                            </div>
+                            <i data-lucide="external-link" style="width: 14px; color: var(--text-muted);"></i>
+                        </a>
+
+                        <button onclick="openVipModal()" class="btn-action" style="width: 100%; background: var(--accent); color: #0f172a; justify-content: center; padding: 10px;">
+                            <i data-lucide="key" style="width: 16px;"></i> Nhập Key Kích Hoạt
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- MUSIC PLAYER FLOATING -->
+    <div class="music-player">
+        <button class="btn-play" id="musicToggleBtn" onclick="toggleMusic()">
+            <i data-lucide="play" id="musicPlayIcon" style="width: 16px; margin-left: 2px;"></i>
+        </button>
+        <div class="music-info">
+            <span class="music-title">Lo-fi Study Beats</span>
+            <span class="music-sub">Nhạc nền tập trung học tập</span>
+        </div>
+        <audio id="bgAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast-notification" id="appToast">
+        <div class="toast-icon">
+            <i data-lucide="clock" style="width: 18px;"></i>
+        </div>
+        <div class="toast-body">
+            <span class="toast-title" id="toastTitle">Chưa Cập Nhật</span>
+            <span class="toast-desc" id="toastDesc">Nội dung này đang được biên soạn!</span>
+        </div>
+        <button class="toast-close" onclick="closeToast()">
+            <i data-lucide="x" style="width: 16px;"></i>
+        </button>
+    </div>
+
+    <!-- MODAL VIP -->
+    <div class="modal" id="vipModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i data-lucide="key" style="color: var(--accent);"></i> Kích Hoạt Key VIP</h3>
+                <i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeVipModal()"></i>
+            </div>
+            <div class="modal-body">
+                <p>Nhập mã Key VIP do Admin cấp qua Zalo <strong>0866702086</strong> hoặc Facebook để mở khóa toàn bộ tài liệu VIP.</p>
+                <div class="input-group">
+                    <label>Mã Key Kích Hoạt</label>
+                    <input type="text" class="modal-input" id="vipKeyInput" placeholder="Ví dụ: VIP2026...">
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeVipModal()">Đóng</button>
+                <button class="btn-confirm" onclick="submitVipKey()">Kích Hoạt</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DANG NHAP -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i data-lucide="user" style="color: var(--primary);"></i> Thông Tin Tài Khoản</h3>
+                <i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeLoginModal()"></i>
+            </div>
+            <div class="modal-body">
+                <p>Nhập tên hiển thị của bạn để lưu lại trên hệ thống:</p>
+                <div class="input-group">
+                    <label>Tên học viên</label>
+                    <input type="text" class="modal-input" id="usernameInput" placeholder="Tên của bạn...">
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeLoginModal()">Hủy</button>
+                <button class="btn-confirm" onclick="submitLogin()">Lưu Thay Đổi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        const CORRECT_VIP_KEY = "VIP2026"; 
+        let isVipUnlocked = localStorage.getItem("isVipUnlocked") === "true";
+        let savedUsername = localStorage.getItem("savedUsername") || "Học Viên";
+        let toastTimeout;
+
+        // TỰ ĐỘNG SINH 30 ĐỀ FREE & 20 ĐỀ VIP
+        window.onload = function() {
+            generateFreeDocs();
+            generateVipDocs();
+
+            if (isVipUnlocked) {
+                unlockAllVipContent();
+            }
+            if (savedUsername) {
+                document.getElementById("userNameDisplay").innerText = savedUsername;
+                document.getElementById("userAvatarIcon").innerText = savedUsername.charAt(0).toUpperCase();
+            }
+            lucide.createIcons();
+        };
+
+        // Sinh Đề Free từ 2 -> 30
+        function generateFreeDocs() {
+            const freeContainer = document.getElementById("freeDocList");
+            for (let i = 2; i <= 30; i++) {
+                const item = document.createElement("div");
+                item.className = "doc-item";
+                item.innerHTML = `
+                    <div class="doc-info">
+                        <h4>Đề Ôn Tập Số ${i} - Môn Toán <span class="badge badge-free">FREE</span></h4>
+                        <p>PDF • Đang cập nhật nội dung</p>
+                    </div>
+                    <button class="btn-action btn-pending" onclick="showNotUpdatedToast('Đề Ôn Tập Số ${i}')">
+                        <i data-lucide="clock" style="width: 14px;"></i> Chưa Cập Nhật
+                    </button>
+                `;
+                freeContainer.appendChild(item);
+            }
+        }
+
+        // Sinh Đề VIP từ 2 -> 20
+        function generateVipDocs() {
+            const vipContainer = document.getElementById("vipDocList");
+            for (let i = 2; i <= 20; i++) {
+                const item = document.createElement("div");
+                item.className = "doc-item";
+                item.innerHTML = `
+                    <div class="doc-info">
+                        <h4>Đề Ôn Tập Đặc Biệt - Số ${i} <span class="badge badge-vip">VIP KEY</span></h4>
+                        <p>PDF • Đang cập nhật nội dung</p>
+                    </div>
+                    <button class="btn-action btn-pending" id="vipBtn${i}" onclick="showNotUpdatedToast('Đề VIP Số ${i}')">
+                        <i data-lucide="clock" style="width: 14px;"></i> Chưa Cập Nhật
+                    </button>
+                `;
+                vipContainer.appendChild(item);
+            }
+        }
+
+        // Thông báo Toast
+        function showNotUpdatedToast(title) {
+            showToast("Nội Dung Chưa Cập Nhật", `${title} đang được biên soạn, vui lòng quay lại sau!`);
+        }
+
+        function showToast(title, desc) {
+            const toast = document.getElementById("appToast");
+            document.getElementById("toastTitle").innerText = title;
+            document.getElementById("toastDesc").innerText = desc;
+            toast.classList.add("show");
+
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                closeToast();
+            }, 3000);
+        }
+
+        function closeToast() {
+            document.getElementById("appToast").classList.remove("show");
+        }
+
+        // Modal Control
+        function openVipModal() { document.getElementById("vipModal").style.display = "flex"; }
+        function closeVipModal() { document.getElementById("vipModal").style.display = "none"; }
+        function openLoginModal() { document.getElementById("loginModal").style.display = "flex"; }
+        function closeLoginModal() { document.getElementById("loginModal").style.display = "none"; }
+
+        // VIP Verification
+        function submitVipKey() {
+            const userKey = document.getElementById("vipKeyInput").value.trim();
+            if (userKey === CORRECT_VIP_KEY) {
+                alert("🎉 Kích hoạt thành công VIP Key! Toàn bộ file đã được mở khóa.");
+                localStorage.setItem("isVipUnlocked", "true");
+                unlockAllVipContent();
+                closeVipModal();
+            } else {
+                alert("❌ Mã Key không chính xác! Vui lòng liên hệ Zalo 0866702086 để lấy mã.");
+            }
+        }
+
+        function unlockAllVipContent() {
+            isVipUnlocked = true;
+            
+            const btn1 = document.getElementById("vipBtn1");
+            if(btn1) {
+                btn1.innerHTML = `<i data-lucide="download" style="width:14px;"></i> Tải Đề VIP 1`;
+                btn1.className = "btn-action btn-download";
+                btn1.setAttribute("onclick", "window.open('THAY_LINK_DRIVE_VIP_1', '_blank')");
+            }
+            lucide.createIcons();
+        }
+
+        function checkVipAccess(link) {
+            if (!isVipUnlocked) {
+                openVipModal();
+            } else {
+                window.open(link, '_blank');
+            }
+        }
+
+        function submitLogin() {
+            const name = document.getElementById("usernameInput").value.trim();
+            if (name) {
+                localStorage.setItem("savedUsername", name);
+                document.getElementById("userNameDisplay").innerText = name;
+                document.getElementById("userAvatarIcon").innerText = name.charAt(0).toUpperCase();
+                closeLoginModal();
+            }
+        }
+
+        // Music Player Toggle
+        let isPlaying = false;
+        const audio = document.getElementById("bgAudio");
+        const musicBtn = document.getElementById("musicToggleBtn");
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.innerHTML = `<i data-lucide="play" style="width: 16px; margin-left:2px;"></i>`;
+            } else {
+                audio.play();
+                musicBtn.innerHTML = `<i data-lucide="pause" style="width: 16px;"></i>`;
+            }
+            isPlaying = !isPlaying;
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
