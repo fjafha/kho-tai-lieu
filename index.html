@@ -29,6 +29,12 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-title); display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spin-icon { animation: spin 1s linear infinite; }
+
         /* SCROLLBAR */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
@@ -286,13 +292,6 @@
         }
         .maintenance-box p { font-size: 0.85rem; color: var(--text-body); font-weight: 500; }
 
-        /* STATS BAR (STUDY TRACKER) */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 10px; }
-        .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; }
-        .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .stat-info h4 { font-size: 1.15rem; font-weight: 800; color: var(--text-title); }
-        .stat-info p { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
-
         /* SECTION CARD FOR DOCS */
         .section-card { 
             background: var(--bg-card); 
@@ -362,10 +361,10 @@
 
         /* GRID LAYOUT FOR DOCS */
         .docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 900px) { .docs-grid { grid-template-columns: 1fr; } .campaign-banner { flex-direction: column; text-align: center; } aside { display: none; } main { margin-left: 0; } .stats-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 900px) { .docs-grid { grid-template-columns: 1fr; } .campaign-banner { flex-direction: column; text-align: center; } aside { display: none; } main { margin-left: 0; } }
 
-        /* AI PRACTICE ROOM & FORMULAS CSS */
-        .practice-box, .formula-box, .challenge-box {
+        /* AI FEATURE MODULES CSS */
+        .practice-box, .ask-box {
             background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 16px;
@@ -398,6 +397,20 @@
         }
         .option-item:hover { border-color: var(--primary); background: var(--primary-light); }
         .option-item input { accent-color: var(--primary); }
+
+        .ai-chat-input {
+            width: 100%;
+            height: 100px;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.88rem;
+            outline: none;
+            resize: none;
+            background: #f8fafc;
+            margin-bottom: 12px;
+        }
+        .ai-chat-input:focus { border-color: var(--primary); background: #ffffff; }
 
         /* FLOATING MUSIC PLAYER */
         .music-player {
@@ -509,10 +522,10 @@
         <div class="menu-list">
             <div class="menu-title">Menu Chính</div>
             <a href="javascript:void(0)" class="menu-item active" id="navHome" onclick="switchTab('home')"><i data-lucide="home"></i> Trang Chủ</a>
-            <a href="javascript:void(0)" class="menu-item" id="navPractice" onclick="switchTab('practice')"><i data-lucide="brain-circuit"></i> Phòng Luyện Đề AI</a>
-            <a href="javascript:void(0)" class="menu-item" id="navFormulas" onclick="switchTab('formulas')"><i data-lucide="book-open"></i> Sổ Tay Casio & Công Thức</a>
-            <a href="javascript:void(0)" class="menu-item" id="navChallenge" onclick="switchTab('challenge')"><i data-lucide="target"></i> Thử Thách Ngày Hôm Nay</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Khóa Học Đang Bảo Trì', 'Hệ thống đang cập nhật các khóa học mới!')"><i data-lucide="book-open"></i> Khóa Học (Bảo trì)</a>
             <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảng Xếp Hạng Bảo Trì', 'Hệ thống xếp hạng Hunter đang nâng cấp!')"><i data-lucide="trophy"></i> Bảng Xếp Hạng Hunter</a>
+            <a href="javascript:void(0)" class="menu-item" id="navPractice" onclick="switchTab('practice')"><i data-lucide="brain-circuit"></i> Phòng Luyện Đề AI</a>
+            <a href="javascript:void(0)" class="menu-item" id="navAsk" onclick="switchTab('ask')"><i data-lucide="message-square-plus"></i> Hỏi Đáp AI Nhanh</a>
             
             <div class="menu-title">Hệ Thống</div>
             <a class="menu-item" onclick="openVipModal()"><i data-lucide="key"></i> Kích Hoạt Key VIP</a>
@@ -536,7 +549,7 @@
         <header>
             <div class="search-box">
                 <i data-lucide="search" style="width: 16px; color: var(--text-muted);"></i>
-                <input type="text" placeholder="Tìm kiếm đề thi, tài liệu, chuyên đề...">
+                <input type="text" placeholder="Tìm kiếm đề thi, tài liệu, đề kiểm tra...">
             </div>
             <div class="header-actions">
                 <button class="btn-vip-top" onclick="openVipModal()">
@@ -556,32 +569,7 @@
             <!-- TAB TRANG CHỦ -->
             <div class="tab-content active" id="tab-home">
                 
-                <!-- STATS TRACKER -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: #eff6ff; color: #2563eb;"><i data-lucide="file-check"></i></div>
-                        <div class="stat-info">
-                            <h4 id="statDownloaded">0</h4>
-                            <p>Đề Thi Đã Tải</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: #fef3c7; color: #d97706;"><i data-lucide="award"></i></div>
-                        <div class="stat-info">
-                            <h4 id="statScore">Chưa thi</h4>
-                            <p>Điểm Luyện Thi AI</p>
-                        </div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-icon" style="background: #f0fdf4; color: #16a34a;"><i data-lucide="flame"></i></div>
-                        <div class="stat-info">
-                            <h4 id="statStreak">1 Ngày</h4>
-                            <p>Chuỗi Ngày Ôn Tập</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CAMPAIGN BANNER & COUNTDOWN -->
+                <!-- BANNER MỤC TIÊU CHIẾN DỊCH & ĐỒNG HỒ ĐẾM NGƯỢC -->
                 <div class="campaign-banner">
                     <div class="banner-left">
                         <div class="campaign-badge"><i data-lucide="timer" style="width: 14px;"></i> MỤC TIÊU CHIẾN DỊCH</div>
@@ -634,13 +622,13 @@
                     <div class="section-card">
                         <h3><i data-lucide="file-text" style="color: var(--primary);"></i> Tài Liệu & Đề Thi Miễn Phí (30 Đề)</h3>
                         <div class="scrollable-doc-list" id="freeDocList">
-                            <!-- Đề 1 Free -->
+                            <!-- Đề 1 Free (ĐÃ GẮN LINK chuẩn Google Drive) -->
                             <div class="doc-item">
                                 <div class="doc-info">
                                     <h4>Đề Ôn Tập Số 1 - Môn Toán <span class="badge badge-free">FREE</span></h4>
                                     <p>PDF • Tải xuống và xem tự do</p>
                                 </div>
-                                <a href="THAY_LINK_DRIVE_FREE_1" target="_blank" class="btn-action btn-download" onclick="trackDownload()">
+                                <a href="https://drive.google.com/file/d/17tbTFjLHB1k9JCGBheAKCA7YoLPXRTJg/view?usp=sharing" target="_blank" class="btn-action btn-download">
                                     <i data-lucide="download" style="width: 14px;"></i> Tải Đề
                                 </a>
                             </div>
@@ -672,79 +660,51 @@
             <div class="tab-content" id="tab-practice">
                 <div class="practice-box">
                     <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="brain-circuit" style="color: var(--primary);"></i> Phòng Luyện Đề Thông Minh AI
+                        <i data-lucide="brain-circuit" style="color: var(--primary);"></i> Phòng Luyện Đề Thông Minh Gemini AI
                     </h3>
                     <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 20px;">
-                        Hệ thống tự động tạo đề thi trắc nghiệm theo chuyên đề ôn thi THPT Quốc Gia giúp bạn rèn luyện phản xạ giải toán & lý hóa.
+                        Gemini AI sẽ tự động sinh đề thi trắc nghiệm theo đúng cấu trúc thi THPT Quốc Gia của Bộ GD&ĐT.
                     </p>
                     
                     <div class="form-control-row">
                         <select class="select-subject" id="practiceSubject">
-                            <option value="toan">Môn Toán - Khảo sát hàm số & Oxyz</option>
-                            <option value="ly">Môn Lý - Dao động cơ & Sóng điện từ</option>
-                            <option value="hoa">Môn Hóa - Este, Lipit & Tổng hợp</option>
+                            <option value="Toán">Môn Toán - Hàm Số & Hình Học Oxyz</option>
+                            <option value="Vật Lý">Môn Vật Lý - Dao Động Cơ & Điện Xoay Chiều</option>
+                            <option value="Hóa Học">Môn Hóa Học - Este, Lipit & Kim Loại</option>
                         </select>
                         <button class="btn-action btn-download" onclick="generateAiQuiz()" style="padding: 10px 18px; font-size: 0.85rem;">
-                            <i data-lucide="sparkles" style="width: 16px;"></i> Tạo Đề AI Ngay
+                            <i data-lucide="sparkles" style="width: 16px;"></i> Tạo Đề Gemini AI Ngay
                         </button>
                     </div>
 
                     <div id="quizContainer" style="margin-top: 20px;">
                         <div style="text-align: center; padding: 40px; color: var(--text-muted);">
                             <i data-lucide="file-question" style="width: 36px; height: 36px; margin-bottom: 8px;"></i>
-                            <p>Chưa có đề thi nào được tạo. Hãy chọn môn và bấm nút "Tạo Đề AI Ngay" ở trên!</p>
+                            <p>Chưa có đề thi nào được tạo. Hãy chọn môn và bấm nút "Tạo Đề Gemini AI Ngay" ở trên!</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- TAB SỔ TAY CÔNG THỨC & CASIO -->
-            <div class="tab-content" id="tab-formulas">
-                <div class="formula-box">
-                    <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="book-open" style="color: var(--primary);"></i> Sổ Tay Mẹo Casio & Công Thức Giải Nhanh THPT
-                    </h3>
-                    <div style="display: flex; flex-direction: column; gap: 14px;">
-                        <div class="question-card">
-                            <h4>🔥 Mẹo 1: Casio tìm cực trị hàm số bậc 3 & 4 cực nhanh</h4>
-                            <p style="font-size: 0.84rem; color: var(--text-body); margin-top: 6px;">
-                                Sử dụng đạo hàm nhanh bằng phím <b>d/dx</b> trên máy tính Casio 580VN X / 880 BTTV. Lưu nghiệm vào biến nhớ A, B để tính khoảng cách giữa hai điểm cực trị theo công thức $S = \frac{|a|}{...}$ mà không cần viết phương trình đường thẳng đi qua cực trị.
-                            </p>
-                        </div>
-                        <div class="question-card">
-                            <h4>🔥 Mẹo 2: Tọa độ Oxyz - Viết phương trình mặt phẳng nhanh</h4>
-                            <p style="font-size: 0.84rem; color: var(--text-body); margin-top: 6px;">
-                                Sử dụng tính năng Vector trên máy tính (<b>MODE -> 5 (VECTOR)</b>) để tính tích có hướng $\vec{n} = [\vec{u}, \vec{v}]$ chỉ trong vòng 5 giây, tránh sai sót dấu khi nhân chéo thủ công.
-                            </p>
-                        </div>
-                        <div class="question-card">
-                            <h4>🔥 Mẹo 3: Tích phân hàm ẩn đổi biến số</h4>
-                            <p style="font-size: 0.84rem; color: var(--text-body); margin-top: 6px;">
-                                Gặp các dạng tích phân hàm ẩn $f(x) + f(2-x) = g(x)$, sử dụng tính chất đối xứng cận $\int_a^b f(x)dx = \int_a^b f(a+b-x)dx$ để giải quyết nhanh gọn.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB THỬ THÁCH NGÀY HÔM NAY -->
-            <div class="tab-content" id="tab-challenge">
-                <div class="challenge-box">
+            <!-- TAB HỎI ĐÁP AI NHANH -->
+            <div class="tab-content" id="tab-ask">
+                <div class="ask-box">
                     <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="target" style="color: var(--accent);"></i> Câu Hỏi Thử Thách Điểm 9-10 Hôm Nay
+                        <i data-lucide="message-square-plus" style="color: var(--primary);"></i> Trợ Lý Giải Bài Tập THPT 24/7 (Gemini AI)
                     </h3>
-                    <div class="question-card" style="background: #fffbeb; border-color: #fde68a;">
-                        <h4 style="color: #b45309;">Câu hỏi Vận dụng cao Môn Toán (#Day 1)</h4>
-                        <p style="font-size: 0.88rem; color: var(--text-title); margin-top: 8px; font-weight: 600;">
-                            Cho hàm số $y = f(x)$ có đạo hàm liên tục trên $\mathbb{R}$. Đồ thị $y = f'(x)$ như hình vẽ. Số điểm cực trị của hàm số $g(x) = f(x^2 - 2x)$ là:
-                        </p>
-                        <div class="options-list" style="margin-top: 12px;">
-                            <label class="option-item"><input type="radio" name="chal" value="A"> A. 3</label>
-                            <label class="option-item"><input type="radio" name="chal" value="B"> B. 5</label>
-                            <label class="option-item"><input type="radio" name="chal" value="C"> C. 4</label>
-                            <label class="option-item"><input type="radio" name="chal" value="D"> D. 2</label>
-                        </div>
-                        <button class="btn-action btn-download" style="margin-top: 14px;" onclick="submitChallenge()">Nộp Đáp Án Thử Thách</button>
+                    <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 16px;">
+                        Nhập đề bài hoặc thắc mắc môn Toán, Lý, Hóa để AI phân tích và hướng dẫn phương pháp giải chi tiết từng bước:
+                    </p>
+                    <textarea class="ai-chat-input" id="userQuestion" placeholder="Ví dụ: Cho hàm số y = x^3 - 3x + 2. Tìm các điểm cực trị và viết phương trình đường thẳng đi qua hai điểm cực trị đó..."></textarea>
+                    <button class="btn-action btn-download" onclick="askAiQuestion()" style="padding: 10px 20px;">
+                        <i data-lucide="send" style="width: 16px;"></i> Gửi Câu Hỏi Cho AI
+                    </button>
+
+                    <div id="aiAnswerContainer" style="margin-top: 20px; display: none; padding: 18px; background: #eff6ff; border-left: 4px solid var(--primary); border-radius: 10px;">
+                        <strong style="color: var(--primary); font-size: 0.95rem; display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                            <i data-lucide="bot" style="width: 18px;"></i> Lời Giải Chi Tiết Từ Gemini AI:
+                        </strong>
+                        <div id="aiAnswerText" style="font-size: 0.88rem; color: #1e3a8a; line-height: 1.6; white-space: pre-line;"></div>
                     </div>
                 </div>
             </div>
@@ -782,7 +742,7 @@
             </div>
             <div class="modal-body">
                 <p>Nhập mã Key VIP do Admin cấp qua Zalo <strong>0866702086</strong> để mở khóa trọn bộ tài liệu VIP.</p>
-                <input type="text" class="modal-input" id="vipKeyInput" placeholder="Ví dụ: VIP2026...">
+                <input type="text" class="modal-input" id="vipKeyInput" placeholder="Ví dụ: QUOCTRIEU...">
             </div>
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="closeVipModal()">Hủy</button>
@@ -811,18 +771,20 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        const CORRECT_VIP_KEY = "VIP2026"; 
+        // MÃ KEY VIP CẬP NHẬT MỚI:
+        const CORRECT_VIP_KEY = "QUOCTRIEU"; 
+
+        // DÁN GEMINI API KEY CỦA BẠN VÀO NGOẶC KÉP BÊN DƯỚI:
+        const GEMINI_API_KEY = "AQ.Ab8RN6Kh30RJvCj-6syt8tqvLfAmJYyDewKvif3BL-Vzwv04xA";
+
         let isVipUnlocked = localStorage.getItem("isVipUnlocked") === "true";
         let savedUsername = localStorage.getItem("savedUsername") || "Học Viên";
-        let downloadedCount = parseInt(localStorage.getItem("downloadedCount") || "0");
-        let bestScore = localStorage.getItem("bestScore") || "Chưa thi";
         let toastTimeout;
 
         window.onload = function() {
             generateFreeDocs();
             generateVipDocs();
             startCountdown();
-            updateStatsDisplay();
 
             if (isVipUnlocked) {
                 unlockAllVipContent();
@@ -834,7 +796,7 @@
             lucide.createIcons();
         };
 
-        // NAVIGATION TABS
+        // SWITCH TAB
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
@@ -845,62 +807,133 @@
             } else if(tabId === 'practice') {
                 document.getElementById('tab-practice').classList.add('active');
                 document.getElementById('navPractice').classList.add('active');
-            } else if(tabId === 'formulas') {
-                document.getElementById('tab-formulas').classList.add('active');
-                document.getElementById('navFormulas').classList.add('active');
-            } else if(tabId === 'challenge') {
-                document.getElementById('tab-challenge').classList.add('active');
-                document.getElementById('navChallenge').classList.add('active');
+            } else if(tabId === 'ask') {
+                document.getElementById('tab-ask').classList.add('active');
+                document.getElementById('navAsk').classList.add('active');
             }
             window.scrollTo(0,0);
         }
 
-        // STATS TRACKER
-        function trackDownload() {
-            downloadedCount++;
-            localStorage.setItem("downloadedCount", downloadedCount);
-            updateStatsDisplay();
+        // AI HỎI ĐÁP NHANH
+        async function askAiQuestion() {
+            const question = document.getElementById("userQuestion").value.trim();
+            const ansContainer = document.getElementById("aiAnswerContainer");
+            const ansText = document.getElementById("aiAnswerText");
+
+            if(!question) {
+                alert("Vui lòng nhập câu hỏi hoặc đề bài!");
+                return;
+            }
+
+            ansContainer.style.display = "block";
+            ansText.innerText = "⏳ Gemini AI đang suy nghĩ và phân tích lời giải...";
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=\${GEMINI_API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: "Bạn là giáo viên ôn thi THPT Quốc Gia xuất sắc. Hãy giải thích chi tiết câu hỏi sau: " + question }] }]
+                    })
+                });
+
+                const data = await response.json();
+                ansText.innerText = data.candidates[0].content.parts[0].text;
+            } catch (err) {
+                ansText.innerText = "❌ Không thể kết nối với AI. Vui lòng kiểm tra lại GEMINI_API_KEY!";
+            }
         }
 
-        function updateStatsDisplay() {
-            document.getElementById("statDownloaded").innerText = downloadedCount;
-            document.getElementById("statScore").innerText = bestScore;
-        }
-
-        // AI QUIZ GENERATOR SIMULATOR
-        function generateAiQuiz() {
+        // GEMINI AI LUYỆN ĐỀ
+        async function generateAiQuiz() {
             const subject = document.getElementById("practiceSubject").value;
             const container = document.getElementById("quizContainer");
-            
-            let questionsHTML = `<h4 style="margin-bottom: 12px; color: var(--primary);">Đề thi AI tạo tự động (${subject.toUpperCase()})</h4>`;
-            
-            for(let i=1; i<=3; i++) {
-                questionsHTML += `
-                    <div class="question-card">
-                        <h4>Câu ${i}: Cho hàm số hoặc biểu thức đặc trưng của đề thi THPT Quốc Gia môn ${subject.toUpperCase()} số ${i}?</h4>
-                        <div class="options-list">
-                            <label class="option-item"><input type="radio" name="q${i}" value="A"> A. Đáp án A chuẩn xác</label>
-                            <label class="option-item"><input type="radio" name="q${i}" value="B"> B. Đáp án B tối ưu</label>
-                            <label class="option-item"><input type="radio" name="q${i}" value="C" id="correct${i}"> C. Đáp án C (Đúng)</label>
-                            <label class="option-item"><input type="radio" name="q${i}" value="D"> D. Đáp án D khác</label>
-                        </div>
-                    </div>
-                `;
-            }
-            questionsHTML += `<button class="btn-action btn-download" onclick="submitAiQuiz()">Nộp Bài & Xem Điểm AI</button>`;
-            container.innerHTML = questionsHTML;
+
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--primary);">
+                    <i data-lucide="loader-2" class="spin-icon" style="width: 36px; height: 36px; margin-bottom: 8px;"></i>
+                    <p style="font-weight: 700;">Gemini AI đang tạo câu hỏi chuẩn cấu trúc THPT môn \${subject}...</p>
+                </div>
+            `;
             lucide.createIcons();
+
+            const promptText = `Hãy tạo 3 câu hỏi trắc nghiệm ôn thi THPT Quốc Gia môn \${subject}.
+            Yêu cầu BẮT BUỘC trả về DUY NHẤT định dạng JSON (không dùng markdown block \`\`\`json) theo cấu trúc mảng:
+            [
+              {
+                "question": "Nội dung câu hỏi...",
+                "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
+                "correctIndex": 0,
+                "explanation": "Lời giải chi tiết..."
+              }
+            ]`;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: promptText }] }]
+                    })
+                });
+
+                const data = await response.json();
+                let rawText = data.candidates[0].content.parts[0].text;
+                rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
+                const questions = JSON.parse(rawText);
+
+                let questionsHTML = `<h4 style="margin-bottom: 14px; color: var(--primary); font-weight: 800;">✨ Đề thi AI vừa khởi tạo (Môn ${subject})</h4>`;
+                
+                questions.forEach((q, idx) => {
+                    questionsHTML += `
+                        <div class="question-card" id="q-box-${idx}">
+                            <h4 style="font-size: 0.95rem; line-height: 1.5; color: var(--text-title);">Câu ${idx + 1}: ${q.question}</h4>
+                            <div class="options-list" style="margin-top: 10px;">
+                                ${q.options.map((opt, oIdx) => `
+                                    <label class="option-item">
+                                        <input type="radio" name="ai_q_${idx}" value="${oIdx}">
+                                        \${opt}
+                                    </label>
+                                `).join('')}
+                            </div>
+                            <div id="exp-${idx}" style="display:none; margin-top:12px; padding:10px; background:#eff6ff; border-left:4px solid #2563eb; border-radius:6px; font-size:0.83rem; color:#1e3a8a;">
+                                <strong>💡 Lời giải chi tiết:</strong> ${q.explanation}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                questionsHTML += `
+                    <button class="btn-action btn-download" onclick='checkAiQuizAnswers(${JSON.stringify(questions).replace(/'/g, "&apos;")})' style="margin-top: 10px; padding: 10px 20px;">
+                        <i data-lucide="check-circle" style="width: 16px;"></i> Nộp Bài & Chấm Điểm AI
+                    </button>
+                `;
+
+                container.innerHTML = questionsHTML;
+                lucide.createIcons();
+
+            } catch (err) {
+                container.innerHTML = `<div style="text-align: center; padding: 20px; color: #ef4444;"><p>❌ Lỗi kết nối Gemini API. Hãy dán API Key vào dòng 314!</p></div>`;
+            }
         }
 
-        function submitAiQuiz() {
-            bestScore = "8.5 / 10";
-            localStorage.setItem("bestScore", bestScore);
-            updateStatsDisplay();
-            showToast("Chấm Điểm Thành Công", "AI đã chấm bài: Bạn đạt 8.5 điểm! Xem lời giải chi tiết bên dưới.");
-        }
+        function checkAiQuizAnswers(questions) {
+            let score = 0;
+            questions.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="ai_q_${idx}"]:checked`);
+                const expBox = document.getElementById(`exp-${idx}`);
+                expBox.style.display = "block";
 
-        function submitChallenge() {
-            showToast("Chính Xác!", "Chúc mừng bạn đã giải đúng câu hỏi vận dụng cao hôm nay!");
+                if (selected && parseInt(selected.value) === q.correctIndex) {
+                    score++;
+                    document.getElementById(`q-box-${idx}`).style.borderColor = "#22c55e";
+                } else {
+                    document.getElementById(`q-box-${idx}`).style.borderColor = "#ef4444";
+                }
+            });
+
+            const finalPoint = ((score / questions.length) * 10).toFixed(1);
+            showToast("Kết Quả Làm Bài AI", `Bạn đạt ${finalPoint}/10 điểm! Đã mở hiển thị lời giải chi tiết bên dưới.`);
         }
 
         // Sinh Đề Free 2 -> 30
@@ -1020,7 +1053,7 @@
             if(btn1) {
                 btn1.innerHTML = `<i data-lucide="download" style="width:14px;"></i> Tải Đề VIP 1`;
                 btn1.className = "btn-action btn-download";
-                btn1.setAttribute("onclick", "window.open('THAY_LINK_DRIVE_VIP_1', '_blank'); trackDownload();");
+                btn1.setAttribute("onclick", "window.open('THAY_LINK_DRIVE_VIP_1', '_blank')");
             }
             lucide.createIcons();
         }
@@ -1030,7 +1063,6 @@
                 openVipModal();
             } else {
                 window.open(link, '_blank');
-                trackDownload();
             }
         }
 
