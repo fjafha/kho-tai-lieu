@@ -14,12 +14,10 @@
             --bg-sidebar: #ffffff;
             --bg-card: #ffffff;
             --border: #e2e8f0;
-            --border-active: #2563eb;
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
             --primary-light: #eff6ff;
             --accent: #f59e0b;
-            --accent-light: #fef3c7;
             --text-title: #0f172a;
             --text-body: #475569;
             --text-muted: #94a3b8;
@@ -29,481 +27,103 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-title); display: flex; min-height: 100vh; overflow-x: hidden; }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .spin-icon { animation: spin 1s linear infinite; }
-
-        /* SCROLLBAR */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
 
         /* SIDEBAR LIGHT */
-        aside { 
-            width: var(--sidebar-width); 
-            background: var(--bg-sidebar); 
-            border-right: 1px solid var(--border); 
-            display: flex; 
-            flex-direction: column; 
-            position: fixed; 
-            height: 100vh; 
-            z-index: 20; 
-        }
-        .logo-area { 
-            padding: 20px 18px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            border-bottom: 1px solid var(--border); 
-        }
-        .logo-icon { 
-            width: 38px; 
-            height: 38px; 
-            background: linear-gradient(135deg, #2563eb, #3b82f6); 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-        }
+        aside { width: var(--sidebar-width); background: var(--bg-sidebar); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 20; }
+        .logo-area { padding: 20px 18px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+        .logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg, #2563eb, #3b82f6); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
         .logo-text h2 { font-size: 1.05rem; font-weight: 800; color: #1e293b; letter-spacing: -0.3px; }
         .logo-text span { font-size: 0.7rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
 
         .menu-list { padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; flex: 1; overflow-y: auto; }
         .menu-title { font-size: 0.68rem; text-transform: uppercase; color: var(--text-muted); padding: 10px 12px 4px 12px; font-weight: 800; letter-spacing: 0.8px; }
         
-        .menu-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            padding: 10px 14px; 
-            border-radius: 10px; 
-            color: var(--text-body); 
-            text-decoration: none; 
-            font-size: 0.86rem; 
-            font-weight: 600; 
-            transition: all 0.2s ease; 
-            cursor: pointer;
-        }
+        .menu-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; color: var(--text-body); text-decoration: none; font-size: 0.86rem; font-weight: 600; transition: all 0.2s ease; cursor: pointer; }
         .menu-item:hover { background: var(--primary-light); color: var(--primary); }
         .menu-item.active { background: #eff6ff; color: var(--primary); font-weight: 700; border-left: 4px solid var(--primary); border-radius: 4px 10px 10px 4px; }
         .menu-item i { width: 18px; height: 18px; }
 
-        /* CONTACT ADMIN IN SIDEBAR */
-        .sidebar-contact {
-            margin: 12px;
-            padding: 14px;
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .sidebar-contact-title {
-            font-size: 0.72rem;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .contact-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 10px;
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--text-title);
-            font-size: 0.8rem;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .contact-link:hover { border-color: var(--primary); color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+        .sidebar-contact { margin: 12px; padding: 14px; background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; display: flex; flex-direction: column; gap: 10px; }
+        .sidebar-contact-title { font-size: 0.72rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+        .contact-link { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: var(--text-title); font-size: 0.8rem; font-weight: 600; transition: all 0.2s; }
+        .contact-link:hover { border-color: var(--primary); color: var(--primary); }
 
         /* MAIN CONTENT */
         main { flex: 1; margin-left: var(--sidebar-width); display: flex; flex-direction: column; min-width: 0; }
-
-        /* HEADER */
-        header { 
-            height: 68px; 
-            background: #ffffff; 
-            border-bottom: 1px solid var(--border); 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            padding: 0 28px; 
-            position: sticky; 
-            top: 0; 
-            z-index: 10; 
-        }
-        .search-box { 
-            display: flex; 
-            align-items: center; 
-            background: #f1f5f9; 
-            border-radius: 10px; 
-            padding: 8px 16px; 
-            width: 360px; 
-            border: 1px solid transparent; 
-            transition: all 0.2s;
-        }
-        .search-box:focus-within { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+        header { height: 68px; background: #ffffff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 28px; position: sticky; top: 0; z-index: 10; }
+        .search-box { display: flex; align-items: center; background: #f1f5f9; border-radius: 10px; padding: 8px 16px; width: 360px; }
         .search-box input { border: none; background: transparent; outline: none; width: 100%; font-size: 0.88rem; margin-left: 10px; color: var(--text-title); }
         
         .header-actions { display: flex; align-items: center; gap: 14px; }
-        .btn-vip-top { 
-            background: linear-gradient(135deg, #f59e0b, #d97706); 
-            color: #ffffff; 
-            border: none;
-            padding: 8px 16px; 
-            border-radius: 8px; 
-            font-size: 0.85rem; 
-            font-weight: 700; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.25);
-            transition: all 0.2s; 
-        }
-        .btn-vip-top:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(245, 158, 11, 0.35); }
-        
-        .user-profile { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            cursor: pointer; 
-            padding: 6px 12px; 
-            border-radius: 20px; 
-            background: #f1f5f9; 
-            border: 1px solid var(--border);
-            transition: all 0.2s;
-        }
-        .user-profile:hover { background: #e2e8f0; }
-        .user-avatar { 
-            width: 30px; 
-            height: 30px; 
-            background: var(--primary); 
-            color: white; 
-            border-radius: 50%; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 700; 
-            font-size: 0.82rem; 
-        }
+        .btn-vip-top { background: linear-gradient(135deg, #f59e0b, #d97706); color: #ffffff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .user-profile { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 20px; background: #f1f5f9; border: 1px solid var(--border); }
+        .user-avatar { width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.82rem; }
 
-        /* CONTENT BODY */
         .content-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; max-width: 1280px; width: 100%; margin: 0 auto; padding-bottom: 90px; }
-
-        /* TABS VIEW CONTENT */
         .tab-content { display: none; flex-direction: column; gap: 20px; }
         .tab-content.active { display: flex; }
 
-        /* CAMPAIGN BANNER WITH COUNTDOWN */
-        .campaign-banner { 
-            background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%); 
-            border-radius: 20px; 
-            padding: 24px 28px; 
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 20px;
-            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
-            position: relative;
-            overflow: hidden;
-        }
+        /* CAMPAIGN BANNER */
+        .campaign-banner { background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%); border-radius: 20px; padding: 24px 28px; color: #ffffff; display: flex; align-items: center; justify-content: space-between; gap: 20px; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25); }
         .banner-left { max-width: 520px; z-index: 2; }
-        .campaign-badge { 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px; 
-            background: rgba(255, 255, 255, 0.2); 
-            padding: 4px 12px; 
-            border-radius: 20px; 
-            font-size: 0.72rem; 
-            font-weight: 800; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-            backdrop-filter: blur(4px);
-        }
-        .banner-left h2 { font-size: 1.45rem; font-weight: 800; line-height: 1.3; margin-bottom: 6px; letter-spacing: -0.3px; }
-        .banner-left p { font-size: 0.85rem; opacity: 0.9; line-height: 1.5; font-weight: 500; }
+        .campaign-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+        .banner-left h2 { font-size: 1.45rem; font-weight: 800; line-height: 1.3; margin-bottom: 6px; }
+        .banner-left p { font-size: 0.85rem; opacity: 0.9; line-height: 1.5; }
 
-        /* COUNTDOWN BOX */
-        .countdown-container { 
-            background: rgba(15, 23, 42, 0.35); 
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 16px 20px; 
-            border-radius: 18px; 
-            display: flex; 
-            gap: 10px; 
-            align-items: center;
-            z-index: 2;
-        }
+        .countdown-container { background: rgba(15, 23, 42, 0.35); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 16px 20px; border-radius: 18px; display: flex; gap: 10px; align-items: center; }
         .timer-unit { display: flex; flex-direction: column; align-items: center; }
-        .timer-card { 
-            background: #ffffff; 
-            color: #0f172a; 
-            font-size: 1.4rem; 
-            font-weight: 800; 
-            width: 54px; 
-            height: 50px; 
-            border-radius: 10px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
+        .timer-card { background: #ffffff; color: #0f172a; font-size: 1.4rem; font-weight: 800; width: 54px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .timer-card.hot { background: #ffffff; color: #2563eb; border: 2px solid #f59e0b; position: relative; }
-        .hot-tag { position: absolute; top: -8px; background: #ef4444; color: #fff; font-size: 0.55rem; font-weight: 800; padding: 1px 5px; border-radius: 4px; letter-spacing: 0.5px; }
+        .hot-tag { position: absolute; top: -8px; background: #ef4444; color: #fff; font-size: 0.55rem; font-weight: 800; padding: 1px 5px; border-radius: 4px; }
         .timer-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-top: 6px; }
 
-        /* BẢNG XẾP HẠNG HUNTER (BẢO TRÌ) */
-        .leaderboard-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
-        }
+        /* LEADERBOARD & DOCS */
+        .leaderboard-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
         .card-header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .card-header-flex h3 { font-size: 1rem; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 8px; }
-        
-        .maintenance-box {
-            background: #f8fafc;
-            border: 1px dashed #cbd5e1;
-            border-radius: 12px;
-            padding: 24px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        .maintenance-box p { font-size: 0.85rem; color: var(--text-body); font-weight: 500; }
+        .maintenance-box { background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .maintenance-box p { font-size: 0.85rem; color: var(--text-body); }
 
-        /* SECTION CARD FOR DOCS */
-        .section-card { 
-            background: var(--bg-card); 
-            border: 1px solid var(--border); 
-            border-radius: 16px; 
-            padding: 20px; 
-        }
-        .section-card h3 { 
-            font-size: 0.98rem; 
-            font-weight: 800;
-            margin-bottom: 14px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            color: var(--text-title); 
-        }
+        .section-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+        .section-card h3 { font-size: 0.98rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text-title); }
+        .scrollable-doc-list { max-height: 420px; overflow-y: auto; padding-right: 4px; }
 
-        .scrollable-doc-list {
-            max-height: 420px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        /* DOCUMENT ITEM LIGHT */
-        .doc-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            padding: 12px 16px; 
-            border: 1px solid var(--border); 
-            border-radius: 10px; 
-            margin-bottom: 10px; 
-            transition: all 0.2s ease; 
-            background: #ffffff; 
-        }
-        .doc-item:hover { 
-            border-color: var(--primary); 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-            transform: translateX(2px); 
-        }
-        .doc-info { display: flex; flex-direction: column; gap: 2px; }
+        .doc-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; background: #ffffff; transition: all 0.2s; }
+        .doc-item:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
         .doc-info h4 { font-size: 0.88rem; font-weight: 700; color: var(--text-title); display: flex; align-items: center; gap: 6px; }
         .doc-info p { font-size: 0.75rem; color: var(--text-muted); }
-        
         .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 4px; font-weight: 800; }
         .badge-free { background: #dbeafe; color: #1d4ed8; }
         .badge-vip { background: #fef3c7; color: #b45309; }
 
-        .btn-action { 
-            padding: 7px 14px; 
-            border-radius: 8px; 
-            font-size: 0.8rem; 
-            font-weight: 700; 
-            cursor: pointer; 
-            border: none; 
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-            text-decoration: none;
-        }
+        .btn-action { padding: 7px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 700; cursor: pointer; border: none; display: flex; align-items: center; gap: 6px; text-decoration: none; }
         .btn-download { background: var(--primary); color: #ffffff; }
         .btn-download:hover { background: var(--primary-hover); }
         .btn-locked { background: #f1f5f9; color: var(--text-body); border: 1px solid var(--border); }
-        .btn-locked:hover { background: #e2e8f0; color: var(--text-title); }
         .btn-pending { background: #f8fafc; color: var(--text-muted); border: 1px dashed var(--border); }
-
-        /* GRID LAYOUT FOR DOCS */
         .docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 900px) { .docs-grid { grid-template-columns: 1fr; } .campaign-banner { flex-direction: column; text-align: center; } aside { display: none; } main { margin-left: 0; } }
+        @media (max-width: 900px) { .docs-grid { grid-template-columns: 1fr; } aside { display: none; } main { margin-left: 0; } }
 
-        /* AI FEATURE MODULES CSS */
-        .practice-box, .ask-box {
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-        }
-        .form-control-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
-        .select-subject { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.88rem; outline: none; background: #f8fafc; font-weight: 600; color: var(--text-title); }
-        
-        .question-card {
-            background: #f8fafc;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 14px;
-        }
-        .question-card h4 { font-size: 0.92rem; font-weight: 700; color: var(--text-title); margin-bottom: 10px; }
-        .options-list { display: flex; flex-direction: column; gap: 8px; }
-        .option-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            background: #ffffff;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .option-item:hover { border-color: var(--primary); background: var(--primary-light); }
-        .option-item input { accent-color: var(--primary); }
-
-        .ai-chat-input {
-            width: 100%;
-            height: 100px;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-size: 0.88rem;
-            outline: none;
-            resize: none;
-            background: #f8fafc;
-            margin-bottom: 12px;
-        }
-        .ai-chat-input:focus { border-color: var(--primary); background: #ffffff; }
-
-        /* FLOATING MUSIC PLAYER */
-        .music-player {
-            position: fixed;
-            bottom: 20px;
-            right: 24px;
-            z-index: 50;
-            background: #0f172a;
-            color: #ffffff;
-            padding: 10px 16px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+        /* MUSIC PLAYER */
+        .music-player { position: fixed; bottom: 20px; right: 24px; z-index: 50; background: #0f172a; color: #ffffff; padding: 10px 16px; border-radius: 30px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); }
         .music-info { display: flex; flex-direction: column; gap: 1px; }
         .music-title { font-size: 0.78rem; font-weight: 700; color: #ffffff; }
         .music-sub { font-size: 0.68rem; color: #94a3b8; }
-        .btn-play {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #ffffff;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-play:hover { transform: scale(1.08); background: var(--primary-hover); }
+        .btn-play { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #ffffff; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; }
 
-        /* MODAL */
-        .modal { 
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; 
-            width: 100%; height: 100%; 
-            background: rgba(15, 23, 42, 0.6); 
-            backdrop-filter: blur(4px); 
-            z-index: 100; 
-            align-items: center; 
-            justify-content: center; 
-        }
-        .modal-content { 
-            background: #ffffff; 
-            border-radius: 16px; 
-            padding: 24px; 
-            width: 90%; 
-            max-width: 400px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
-        }
+        /* MODALS & TOAST */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; }
+        .modal-content { background: #ffffff; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .modal-header h3 { font-size: 1.05rem; font-weight: 800; color: var(--text-title); display: flex; align-items: center; gap: 8px; }
-        .modal-body p { font-size: 0.82rem; color: var(--text-body); margin-bottom: 14px; line-height: 1.5; }
-        
-        .modal-input { 
-            width: 100%; 
-            padding: 10px 12px; 
-            background: #f8fafc; 
-            border: 1px solid var(--border); 
-            border-radius: 8px; 
-            font-size: 0.88rem; 
-            color: var(--text-title); 
-            outline: none; 
-            margin-bottom: 16px;
-        }
-        .modal-input:focus { border-color: var(--primary); background: #fff; }
-
+        .modal-input { width: 100%; padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; font-size: 0.88rem; outline: none; margin-bottom: 16px; }
         .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; }
         .btn-cancel { background: transparent; color: var(--text-body); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; }
         .btn-confirm { background: var(--primary); color: #ffffff; padding: 8px 16px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; }
 
-        /* TOAST */
-        .toast-notification {
-            position: fixed;
-            bottom: -100px;
-            left: 24px;
-            z-index: 200;
-            background: #0f172a;
-            color: #ffffff;
-            padding: 12px 16px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-            opacity: 0;
-        }
+        .toast-notification { position: fixed; bottom: -100px; left: 24px; z-index: 200; background: #0f172a; color: #ffffff; padding: 12px 16px; border-radius: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: all 0.3s ease; opacity: 0; }
         .toast-notification.show { bottom: 20px; opacity: 1; }
     </style>
 </head>
@@ -522,39 +142,31 @@
         <div class="menu-list">
             <div class="menu-title">Menu Chính</div>
             <a href="javascript:void(0)" class="menu-item active" id="navHome" onclick="switchTab('home')"><i data-lucide="home"></i> Trang Chủ</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Khóa Học Đang Bảo Trì', 'Hệ thống đang cập nhật các khóa học mới!')"><i data-lucide="book-open"></i> Khóa Học (Bảo trì)</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảo Trì', 'Phòng Luyện đang trong quá trình nâng cấp!')"><i data-lucide="dumbbell"></i> Phòng Luyện</a>
             <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảng Xếp Hạng Bảo Trì', 'Hệ thống xếp hạng Hunter đang nâng cấp!')"><i data-lucide="trophy"></i> Bảng Xếp Hạng Hunter</a>
-            <a href="javascript:void(0)" class="menu-item" id="navPractice" onclick="switchTab('practice')"><i data-lucide="brain-circuit"></i> Phòng Luyện Đề AI</a>
-            <a href="javascript:void(0)" class="menu-item" id="navAsk" onclick="switchTab('ask')"><i data-lucide="message-square-plus"></i> Hỏi Đáp AI Nhanh</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảo Trì', 'Phòng Luyện Đề AI đang trong quá trình nâng cấp!')"><i data-lucide="brain-circuit"></i> Phòng Luyện Đề</a>
+            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảo Trì', 'Tính năng Hỏi Đáp AI Nhanh đang bảo trì!')"><i data-lucide="message-square-plus"></i> Hỏi Đáp AI Nhanh</a>
             
             <div class="menu-title">Hệ Thống</div>
             <a class="menu-item" onclick="openVipModal()"><i data-lucide="key"></i> Kích Hoạt Key VIP</a>
         </div>
 
-        <!-- CONTACT ADMIN -->
         <div class="sidebar-contact">
             <div class="sidebar-contact-title"><i data-lucide="shield-check" style="width: 14px; color: var(--primary);"></i> LIÊN HỆ ADMIN</div>
-            <a href="https://facebook.com" target="_blank" class="contact-link">
-                <i data-lucide="facebook" style="width: 16px; color: #2563eb;"></i> Facebook Admin
-            </a>
-            <a href="https://zalo.me/0866702086" target="_blank" class="contact-link">
-                <i data-lucide="message-circle" style="width: 16px; color: #0284c7;"></i> Zalo: 0866702086
-            </a>
+            <a href="https://facebook.com" target="_blank" class="contact-link"><i data-lucide="facebook" style="width: 16px; color: #2563eb;"></i> Facebook Admin</a>
+            <a href="https://zalo.me/0866702086" target="_blank" class="contact-link"><i data-lucide="message-circle" style="width: 16px; color: #0284c7;"></i> Zalo: 0866702086</a>
         </div>
     </aside>
 
     <!-- MAIN -->
     <main>
-        <!-- HEADER -->
         <header>
             <div class="search-box">
                 <i data-lucide="search" style="width: 16px; color: var(--text-muted);"></i>
                 <input type="text" placeholder="Tìm kiếm đề thi, tài liệu, đề kiểm tra...">
             </div>
             <div class="header-actions">
-                <button class="btn-vip-top" onclick="openVipModal()">
-                    <i data-lucide="sparkles" style="width: 16px;"></i> Nhập Key VIP
-                </button>
+                <button class="btn-vip-top" onclick="openVipModal()"><i data-lucide="sparkles" style="width: 16px;"></i> Nhập Key VIP</button>
                 <div class="user-profile" onclick="openLoginModal()">
                     <div class="user-avatar" id="userAvatarIcon">S</div>
                     <span id="userNameDisplay" style="font-size: 0.85rem; font-weight: 700; color: var(--text-title);">Học Viên</span>
@@ -563,13 +175,9 @@
             </div>
         </header>
 
-        <!-- CONTENT BODY -->
         <div class="content-body">
-            
             <!-- TAB TRANG CHỦ -->
             <div class="tab-content active" id="tab-home">
-                
-                <!-- BANNER MỤC TIÊU CHIẾN DỊCH & ĐỒNG HỒ ĐẾM NGƯỢC -->
                 <div class="campaign-banner">
                     <div class="banner-left">
                         <div class="campaign-badge"><i data-lucide="timer" style="width: 14px;"></i> MỤC TIÊU CHIẾN DỊCH</div>
@@ -578,35 +186,17 @@
                     </div>
 
                     <div class="countdown-container">
-                        <div class="timer-unit">
-                            <div class="timer-card hot">
-                                <span class="hot-tag">HOT</span>
-                                <span id="cd-days">235</span>
-                            </div>
-                            <span class="timer-label">NGÀY</span>
-                        </div>
-                        <div class="timer-unit">
-                            <div class="timer-card" id="cd-hours">07</div>
-                            <span class="timer-label">GIỜ</span>
-                        </div>
-                        <div class="timer-unit">
-                            <div class="timer-card" id="cd-minutes">53</div>
-                            <span class="timer-label">PHÚT</span>
-                        </div>
-                        <div class="timer-unit">
-                            <div class="timer-card" id="cd-seconds">12</div>
-                            <span class="timer-label">GIẤY</span>
-                        </div>
+                        <div class="timer-unit"><div class="timer-card hot"><span class="hot-tag">HOT</span><span id="cd-days">235</span></div><span class="timer-label">NGÀY</span></div>
+                        <div class="timer-unit"><div class="timer-card" id="cd-hours">06</div><span class="timer-label">GIỜ</span></div>
+                        <div class="timer-unit"><div class="timer-card" id="cd-minutes">35</div><span class="timer-label">PHÚT</span></div>
+                        <div class="timer-unit"><div class="timer-card" id="cd-seconds">55</div><span class="timer-label">GIÂY</span></div>
                     </div>
                 </div>
 
-                <!-- BẢNG XẾP HẠNG HUNTER (BẢO TRÌ) -->
                 <div class="leaderboard-card">
                     <div class="card-header-flex">
                         <h3><i data-lucide="trophy" style="color: var(--accent);"></i> BẢNG XẾP HẠNG HUNTER</h3>
-                        <span style="font-size: 0.72rem; background: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 4px;">
-                            <i data-lucide="alert-triangle" style="width: 12px;"></i> TRẠNG THÁI: TẠM THỜI BẢO TRÌ
-                        </span>
+                        <span style="font-size: 0.72rem; background: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 4px;"><i data-lucide="alert-triangle" style="width: 12px;"></i> TRẠNG THÁI: TẠM THỜI BẢO TRÌ</span>
                     </div>
                     <div class="maintenance-box">
                         <i data-lucide="wrench" style="width: 28px; color: var(--text-muted);"></i>
@@ -615,14 +205,10 @@
                     </div>
                 </div>
 
-                <!-- GRID TÀI LIỆU & ĐỀ THI -->
                 <div class="docs-grid">
-                    
-                    <!-- 30 ĐỀ FREE -->
                     <div class="section-card">
                         <h3><i data-lucide="file-text" style="color: var(--primary);"></i> Tài Liệu & Đề Thi Miễn Phí (30 Đề)</h3>
                         <div class="scrollable-doc-list" id="freeDocList">
-                            <!-- Đề 1 Free (ĐÃ GẮN LINK chuẩn Google Drive) -->
                             <div class="doc-item">
                                 <div class="doc-info">
                                     <h4>Đề Ôn Tập Số 1 - Môn Toán <span class="badge badge-free">FREE</span></h4>
@@ -635,11 +221,9 @@
                         </div>
                     </div>
 
-                    <!-- 20 ĐỀ VIP -->
                     <div class="section-card" style="border-color: #fde68a;">
                         <h3><i data-lucide="lock" style="color: var(--accent);"></i> Kho Tài Liệu & Đề VIP (20 Đề)</h3>
                         <div class="scrollable-doc-list" id="vipDocList">
-                            <!-- Đề 1 VIP -->
                             <div class="doc-item">
                                 <div class="doc-info">
                                     <h4>Đề Ôn Tập Đặc Biệt - Số 1 <span class="badge badge-vip">VIP</span></h4>
@@ -651,131 +235,59 @@
                             </div>
                         </div>
                     </div>
-
-                </div>
-
-            </div>
-
-            <!-- TAB PHÒNG LUYỆN ĐỀ AI -->
-            <div class="tab-content" id="tab-practice">
-                <div class="practice-box">
-                    <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="brain-circuit" style="color: var(--primary);"></i> Phòng Luyện Đề Thông Minh Gemini AI
-                    </h3>
-                    <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 20px;">
-                        Gemini AI sẽ tự động sinh đề thi trắc nghiệm theo đúng cấu trúc thi THPT Quốc Gia của Bộ GD&ĐT.
-                    </p>
-                    
-                    <div class="form-control-row">
-                        <select class="select-subject" id="practiceSubject">
-                            <option value="Toán">Môn Toán - Hàm Số & Hình Học Oxyz</option>
-                            <option value="Vật Lý">Môn Vật Lý - Dao Động Cơ & Điện Xoay Chiều</option>
-                            <option value="Hóa Học">Môn Hóa Học - Este, Lipit & Kim Loại</option>
-                        </select>
-                        <button class="btn-action btn-download" onclick="generateAiQuiz()" style="padding: 10px 18px; font-size: 0.85rem;">
-                            <i data-lucide="sparkles" style="width: 16px;"></i> Tạo Đề Gemini AI Ngay
-                        </button>
-                    </div>
-
-                    <div id="quizContainer" style="margin-top: 20px;">
-                        <div style="text-align: center; padding: 40px; color: var(--text-muted);">
-                            <i data-lucide="file-question" style="width: 36px; height: 36px; margin-bottom: 8px;"></i>
-                            <p>Chưa có đề thi nào được tạo. Hãy chọn môn và bấm nút "Tạo Đề Gemini AI Ngay" ở trên!</p>
-                        </div>
-                    </div>
                 </div>
             </div>
-
-            <!-- TAB HỎI ĐÁP AI NHANH -->
-            <div class="tab-content" id="tab-ask">
-                <div class="ask-box">
-                    <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        <i data-lucide="message-square-plus" style="color: var(--primary);"></i> Trợ Lý Giải Bài Tập THPT 24/7 (Gemini AI)
-                    </h3>
-                    <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 16px;">
-                        Nhập đề bài hoặc thắc mắc môn Toán, Lý, Hóa để AI phân tích và hướng dẫn phương pháp giải chi tiết từng bước:
-                    </p>
-                    <textarea class="ai-chat-input" id="userQuestion" placeholder="Ví dụ: Cho hàm số y = x^3 - 3x + 2. Tìm các điểm cực trị và viết phương trình đường thẳng đi qua hai điểm cực trị đó..."></textarea>
-                    <button class="btn-action btn-download" onclick="askAiQuestion()" style="padding: 10px 20px;">
-                        <i data-lucide="send" style="width: 16px;"></i> Gửi Câu Hỏi Cho AI
-                    </button>
-
-                    <div id="aiAnswerContainer" style="margin-top: 20px; display: none; padding: 18px; background: #eff6ff; border-left: 4px solid var(--primary); border-radius: 10px;">
-                        <strong style="color: var(--primary); font-size: 0.95rem; display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
-                            <i data-lucide="bot" style="width: 18px;"></i> Lời Giải Chi Tiết Từ Gemini AI:
-                        </strong>
-                        <div id="aiAnswerText" style="font-size: 0.88rem; color: #1e3a8a; line-height: 1.6; white-space: pre-line;"></div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
 
-    <!-- MUSIC PLAYER FLOATING -->
+    <!-- MUSIC PLAYER -->
     <div class="music-player">
-        <button class="btn-play" id="musicToggleBtn" onclick="toggleMusic()">
-            <i data-lucide="play" id="musicPlayIcon" style="width: 16px; margin-left: 2px;"></i>
-        </button>
-        <div class="music-info">
-            <span class="music-title">Lo-fi Study Beats</span>
-            <span class="music-sub">Nhạc nền tập trung ôn thi</span>
-        </div>
+        <button class="btn-play" id="musicToggleBtn" onclick="toggleMusic()"><i data-lucide="play" id="musicPlayIcon" style="width: 16px; margin-left: 2px;"></i></button>
+        <div class="music-info"><span class="music-title">Lo-fi Study Beats</span><span class="music-sub">Nhạc nền tập trung ôn thi</span></div>
         <audio id="bgAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
     </div>
 
-    <!-- TOAST -->
-    <div class="toast-notification" id="appToast">
-        <i data-lucide="info" style="width: 18px; color: #38bdf8;"></i>
-        <div style="display: flex; flex-direction: column;">
-            <strong id="toastTitle" style="font-size: 0.85rem;">Thông báo</strong>
-            <span id="toastDesc" style="font-size: 0.75rem; color: #94a3b8;">Nội dung chi tiết</span>
-        </div>
-    </div>
+    <!-- TOAST & MODALS -->
+    <div class="toast-notification" id="appToast"><i data-lucide="info" style="width: 18px; color: #38bdf8;"></i><div style="display: flex; flex-direction: column;"><strong id="toastTitle" style="font-size: 0.85rem;">Thông báo</strong><span id="toastDesc" style="font-size: 0.75rem; color: #94a3b8;">Nội dung chi tiết</span></div></div>
 
-    <!-- MODAL VIP -->
     <div class="modal" id="vipModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3><i data-lucide="key" style="color: var(--accent);"></i> Kích Hoạt Key VIP</h3>
-                <i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeVipModal()"></i>
-            </div>
-            <div class="modal-body">
-                <p>Nhập mã Key VIP do Admin cấp qua Zalo <strong>0866702086</strong> để mở khóa trọn bộ tài liệu VIP.</p>
-                <input type="text" class="modal-input" id="vipKeyInput" placeholder="Nhập mã VIP của bạn vào đây...">
-            </div>
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeVipModal()">Hủy</button>
-                <button class="btn-confirm" onclick="submitVipKey()">Kích Hoạt</button>
-            </div>
+            <div class="modal-header"><h3><i data-lucide="key" style="color: var(--accent);"></i> Kích Hoạt Key VIP</h3><i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeVipModal()"></i></div>
+            <div class="modal-body"><p>Nhập mã Key VIP do Admin cấp qua Zalo <strong>0866702086</strong> để mở khóa trọn bộ tài liệu VIP.</p><input type="text" class="modal-input" id="vipKeyInput" placeholder="Ví dụ: QUOCTRIEU..."></div>
+            <div class="modal-buttons"><button class="btn-cancel" onclick="closeVipModal()">Hủy</button><button class="btn-confirm" onclick="submitVipKey()">Kích Hoạt</button></div>
         </div>
     </div>
 
-    <!-- MODAL USER -->
     <div class="modal" id="loginModal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3><i data-lucide="user" style="color: var(--primary);"></i> Tên Học Viên</h3>
-                <i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeLoginModal()"></i>
-            </div>
-            <div class="modal-body">
-                <p>Nhập tên hiển thị của bạn trên hệ thống:</p>
-                <input type="text" class="modal-input" id="usernameInput" placeholder="Nhập tên của bạn...">
-            </div>
-            <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closeLoginModal()">Hủy</button>
-                <button class="btn-confirm" onclick="submitLogin()">Lưu Lại</button>
-            </div>
+            <div class="modal-header"><h3><i data-lucide="user" style="color: var(--primary);"></i> Tên Học Viên</h3><i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeLoginModal()"></i></div>
+            <div class="modal-body"><p>Nhập tên hiển thị của bạn trên hệ thống:</p><input type="text" class="modal-input" id="usernameInput" placeholder="Nhập tên của bạn..."></div>
+            <div class="modal-buttons"><button class="btn-cancel" onclick="closeLoginModal()">Hủy</button><button class="btn-confirm" onclick="submitLogin()">Lưu Lại</button></div>
         </div>
     </div>
 
     <!-- JAVASCRIPT -->
     <script>
-        // MÃ KEY VIP CẬP NHẬT MỚI:
-        const CORRECT_VIP_KEY = "HOCSINH2027"; 
+        // CHẶN PHÍM F12 VÀ CHUỘT PHẢI BẢO VỆ HỆ THỐNG
+        document.addEventListener('keydown', function(e) {
+            if (
+                e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j')) || 
+                (e.ctrlKey && (e.key === 'U' || e.key === 'u'))
+            ) {
+                e.preventDefault();
+                alert("⚠️ Tính năng này đã bị khóa để bảo vệ hệ thống bài thi!");
+                return false;
+            }
+        });
 
-        // DÁN GEMINI API KEY CỦA BẠN VÀO NGOẶC KÉP BÊN DƯỚI:
-        const GEMINI_API_KEY = "AQ.Ab8RN6IkIClRcLVLJh7XsstTR6oZSCcqKQ9r6T_aG_9fgaQlgw";
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert("⚠️ Menu chuột phải đã bị khóa trên hệ thống này!");
+        });
+
+        // MÃ KEY VIP:
+        const CORRECT_VIP_KEY = "QUOCTRIEU"; 
 
         let isVipUnlocked = localStorage.getItem("isVipUnlocked") === "true";
         let savedUsername = localStorage.getItem("savedUsername") || "Học Viên";
@@ -784,11 +296,7 @@
         window.onload = function() {
             generateFreeDocs();
             generateVipDocs();
-            startCountdown();
-
-            if (isVipUnlocked) {
-                unlockAllVipContent();
-            }
+            if (isVipUnlocked) unlockAllVipContent();
             if (savedUsername) {
                 document.getElementById("userNameDisplay").innerText = savedUsername;
                 document.getElementById("userAvatarIcon").innerText = savedUsername.charAt(0).toUpperCase();
@@ -796,147 +304,16 @@
             lucide.createIcons();
         };
 
-        // SWITCH TAB
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-
             if(tabId === 'home') {
                 document.getElementById('tab-home').classList.add('active');
                 document.getElementById('navHome').classList.add('active');
-            } else if(tabId === 'practice') {
-                document.getElementById('tab-practice').classList.add('active');
-                document.getElementById('navPractice').classList.add('active');
-            } else if(tabId === 'ask') {
-                document.getElementById('tab-ask').classList.add('active');
-                document.getElementById('navAsk').classList.add('active');
             }
             window.scrollTo(0,0);
         }
 
-        // AI HỎI ĐÁP NHANH
-        async function askAiQuestion() {
-            const question = document.getElementById("userQuestion").value.trim();
-            const ansContainer = document.getElementById("aiAnswerContainer");
-            const ansText = document.getElementById("aiAnswerText");
-
-            if(!question) {
-                alert("Vui lòng nhập câu hỏi hoặc đề bài!");
-                return;
-            }
-
-            ansContainer.style.display = "block";
-            ansText.innerText = "⏳ Gemini AI đang suy nghĩ và phân tích lời giải...";
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=\${GEMINI_API_KEY}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: "Bạn là giáo viên ôn thi THPT Quốc Gia xuất sắc. Hãy giải thích chi tiết câu hỏi sau: " + question }] }]
-                    })
-                });
-
-                const data = await response.json();
-                ansText.innerText = data.candidates[0].content.parts[0].text;
-            } catch (err) {
-                ansText.innerText = "❌ Không thể kết nối với AI. Vui lòng kiểm tra lại GEMINI_API_KEY!";
-            }
-        }
-
-        // GEMINI AI LUYỆN ĐỀ
-        async function generateAiQuiz() {
-            const subject = document.getElementById("practiceSubject").value;
-            const container = document.getElementById("quizContainer");
-
-            container.innerHTML = `
-                <div style="text-align: center; padding: 40px; color: var(--primary);">
-                    <i data-lucide="loader-2" class="spin-icon" style="width: 36px; height: 36px; margin-bottom: 8px;"></i>
-                    <p style="font-weight: 700;">Gemini AI đang tạo câu hỏi chuẩn cấu trúc THPT môn \${subject}...</p>
-                </div>
-            `;
-            lucide.createIcons();
-
-            const promptText = `Hãy tạo 3 câu hỏi trắc nghiệm ôn thi THPT Quốc Gia môn \${subject}.
-            Yêu cầu BẮT BUỘC trả về DUY NHẤT định dạng JSON (không dùng markdown block \`\`\`json) theo cấu trúc mảng:
-            [
-              {
-                "question": "Nội dung câu hỏi...",
-                "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
-                "correctIndex": 0,
-                "explanation": "Lời giải chi tiết..."
-              }
-            ]`;
-
-            try {
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptText }] }]
-                    })
-                });
-
-                const data = await response.json();
-                let rawText = data.candidates[0].content.parts[0].text;
-                rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
-                const questions = JSON.parse(rawText);
-
-                let questionsHTML = `<h4 style="margin-bottom: 14px; color: var(--primary); font-weight: 800;">✨ Đề thi AI vừa khởi tạo (Môn ${subject})</h4>`;
-                
-                questions.forEach((q, idx) => {
-                    questionsHTML += `
-                        <div class="question-card" id="q-box-${idx}">
-                            <h4 style="font-size: 0.95rem; line-height: 1.5; color: var(--text-title);">Câu ${idx + 1}: ${q.question}</h4>
-                            <div class="options-list" style="margin-top: 10px;">
-                                ${q.options.map((opt, oIdx) => `
-                                    <label class="option-item">
-                                        <input type="radio" name="ai_q_${idx}" value="${oIdx}">
-                                        \${opt}
-                                    </label>
-                                `).join('')}
-                            </div>
-                            <div id="exp-${idx}" style="display:none; margin-top:12px; padding:10px; background:#eff6ff; border-left:4px solid #2563eb; border-radius:6px; font-size:0.83rem; color:#1e3a8a;">
-                                <strong>💡 Lời giải chi tiết:</strong> ${q.explanation}
-                            </div>
-                        </div>
-                    `;
-                });
-
-                questionsHTML += `
-                    <button class="btn-action btn-download" onclick='checkAiQuizAnswers(${JSON.stringify(questions).replace(/'/g, "&apos;")})' style="margin-top: 10px; padding: 10px 20px;">
-                        <i data-lucide="check-circle" style="width: 16px;"></i> Nộp Bài & Chấm Điểm AI
-                    </button>
-                `;
-
-                container.innerHTML = questionsHTML;
-                lucide.createIcons();
-
-            } catch (err) {
-                container.innerHTML = `<div style="text-align: center; padding: 20px; color: #ef4444;"><p>❌ Lỗi kết nối Gemini API. Hãy dán API Key vào dòng 314!</p></div>`;
-            }
-        }
-
-        function checkAiQuizAnswers(questions) {
-            let score = 0;
-            questions.forEach((q, idx) => {
-                const selected = document.querySelector(`input[name="ai_q_${idx}"]:checked`);
-                const expBox = document.getElementById(`exp-${idx}`);
-                expBox.style.display = "block";
-
-                if (selected && parseInt(selected.value) === q.correctIndex) {
-                    score++;
-                    document.getElementById(`q-box-${idx}`).style.borderColor = "#22c55e";
-                } else {
-                    document.getElementById(`q-box-${idx}`).style.borderColor = "#ef4444";
-                }
-            });
-
-            const finalPoint = ((score / questions.length) * 10).toFixed(1);
-            showToast("Kết Quả Làm Bài AI", `Bạn đạt ${finalPoint}/10 điểm! Đã mở hiển thị lời giải chi tiết bên dưới.`);
-        }
-
-        // Sinh Đề Free 2 -> 30
         function generateFreeDocs() {
             const freeContainer = document.getElementById("freeDocList");
             for (let i = 2; i <= 30; i++) {
@@ -955,7 +332,6 @@
             }
         }
 
-        // Sinh Đề VIP 2 -> 20
         function generateVipDocs() {
             const vipContainer = document.getElementById("vipDocList");
             for (let i = 2; i <= 20; i++) {
@@ -974,58 +350,22 @@
             }
         }
 
-        // ĐỒNG HỒ ĐẾM NGƯỢC THPT QUỐC GIA 2027 REALTIME
-        function startCountdown() {
-            const targetDate = new Date("2027-06-25T07:30:00").getTime();
-
-            function updateTimer() {
-                const now = new Date().getTime();
-                const distance = targetDate - now;
-
-                if (distance > 0) {
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                    document.getElementById("cd-days").innerText = days < 10 ? "0" + days : days;
-                    document.getElementById("cd-hours").innerText = hours < 10 ? "0" + hours : hours;
-                    document.getElementById("cd-minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-                    document.getElementById("cd-seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
-                }
-            }
-
-            updateTimer();
-            setInterval(updateTimer, 1000);
-        }
-
-        // MUSIC PLAYER TOGGLE
         let isPlaying = false;
         const audio = document.getElementById("bgAudio");
         const musicBtn = document.getElementById("musicToggleBtn");
-
         function toggleMusic() {
-            if (isPlaying) {
-                audio.pause();
-                musicBtn.innerHTML = `<i data-lucide="play" style="width: 16px; margin-left: 2px;"></i>`;
-            } else {
-                audio.play();
-                musicBtn.innerHTML = `<i data-lucide="pause" style="width: 16px;"></i>`;
-            }
+            if (isPlaying) { audio.pause(); musicBtn.innerHTML = `<i data-lucide="play" style="width: 16px; margin-left: 2px;"></i>`; }
+            else { audio.play(); musicBtn.innerHTML = `<i data-lucide="pause" style="width: 16px;"></i>`; }
             isPlaying = !isPlaying;
             lucide.createIcons();
         }
 
-        function showNotUpdatedToast(title) {
-            showToast("Nội Dung Chưa Cập Nhật", `${title} đang được biên soạn, vui lòng quay lại sau!`);
-        }
-
+        function showNotUpdatedToast(title) { showToast("Nội Dung Chưa Cập Nhật", `${title} đang được biên soạn!`); }
         function showToast(title, desc) {
             const toast = document.getElementById("appToast");
             document.getElementById("toastTitle").innerText = title;
             document.getElementById("toastDesc").innerText = desc;
             toast.classList.add("show");
-
             clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => { toast.classList.remove("show"); }, 3000);
         }
@@ -1042,9 +382,7 @@
                 localStorage.setItem("isVipUnlocked", "true");
                 unlockAllVipContent();
                 closeVipModal();
-            } else {
-                alert("❌ Mã Key không chính xác! Vui lòng liên hệ Zalo 0866702086 để nhận mã.");
-            }
+            } else { alert("❌ Mã Key không chính xác! Vui lòng liên hệ Zalo 0866702086 để nhận mã."); }
         }
 
         function unlockAllVipContent() {
@@ -1053,17 +391,14 @@
             if(btn1) {
                 btn1.innerHTML = `<i data-lucide="download" style="width:14px;"></i> Tải Đề VIP 1`;
                 btn1.className = "btn-action btn-download";
-                btn1.setAttribute("onclick", "window.open('THAY_LINK_DRIVE_VIP_1', '_blank')");
+                btn1.setAttribute("onclick", "window.open('https://drive.google.com/file/d/17tbTFjLHB1k9JCGBheAKCA7YoLPXRTJg/view?usp=sharing', '_blank')");
             }
             lucide.createIcons();
         }
 
         function checkVipAccess(link) {
-            if (!isVipUnlocked) {
-                openVipModal();
-            } else {
-                window.open(link, '_blank');
-            }
+            if (!isVipUnlocked) openVipModal();
+            else window.open(link, '_blank');
         }
 
         function submitLogin() {
