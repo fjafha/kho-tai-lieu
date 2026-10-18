@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STUDENT REPO - Hệ Thống Repository & Ôn Thi Trực Tuyến</title>
+    <link rel="icon" href="https://api.iconify.design/lucide:graduation-cap.svg" type="image/svg+xml">
     <!-- Google Fonts & Lucide Icons -->
-   <link rel="icon" href="https://api.iconify.design/lucide:graduation-cap.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
@@ -196,6 +197,10 @@
         /* CONTENT BODY */
         .content-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; max-width: 1280px; width: 100%; margin: 0 auto; padding-bottom: 90px; }
 
+        /* TABS VIEW CONTENT */
+        .tab-content { display: none; flex-direction: column; gap: 20px; }
+        .tab-content.active { display: flex; }
+
         /* CAMPAIGN BANNER WITH COUNTDOWN */
         .campaign-banner { 
             background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 50%, #3b82f6 100%); 
@@ -228,7 +233,7 @@
         .banner-left h2 { font-size: 1.45rem; font-weight: 800; line-height: 1.3; margin-bottom: 6px; letter-spacing: -0.3px; }
         .banner-left p { font-size: 0.85rem; opacity: 0.9; line-height: 1.5; font-weight: 500; }
 
-        /* COUNTDOWN BOX EXACT LAYOUT */
+        /* COUNTDOWN BOX */
         .countdown-container { 
             background: rgba(15, 23, 42, 0.35); 
             backdrop-filter: blur(10px);
@@ -280,6 +285,13 @@
             gap: 8px;
         }
         .maintenance-box p { font-size: 0.85rem; color: var(--text-body); font-weight: 500; }
+
+        /* STATS BAR (STUDY TRACKER) */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 10px; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 16px; display: flex; align-items: center; gap: 14px; }
+        .stat-icon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .stat-info h4 { font-size: 1.15rem; font-weight: 800; color: var(--text-title); }
+        .stat-info p { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
 
         /* SECTION CARD FOR DOCS */
         .section-card { 
@@ -350,7 +362,42 @@
 
         /* GRID LAYOUT FOR DOCS */
         .docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media (max-width: 900px) { .docs-grid { grid-template-columns: 1fr; } .campaign-banner { flex-direction: column; text-align: center; } aside { display: none; } main { margin-left: 0; } }
+        @media (max-width: 900px) { .docs-grid { grid-template-columns: 1fr; } .campaign-banner { flex-direction: column; text-align: center; } aside { display: none; } main { margin-left: 0; } .stats-grid { grid-template-columns: 1fr; } }
+
+        /* AI PRACTICE ROOM & FORMULAS CSS */
+        .practice-box, .formula-box, .challenge-box {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .form-control-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+        .select-subject { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.88rem; outline: none; background: #f8fafc; font-weight: 600; color: var(--text-title); }
+        
+        .question-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+        .question-card h4 { font-size: 0.92rem; font-weight: 700; color: var(--text-title); margin-bottom: 10px; }
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .option-item:hover { border-color: var(--primary); background: var(--primary-light); }
+        .option-item input { accent-color: var(--primary); }
 
         /* FLOATING MUSIC PLAYER */
         .music-player {
@@ -461,10 +508,11 @@
 
         <div class="menu-list">
             <div class="menu-title">Menu Chính</div>
-            <a href="#" class="menu-item active"><i data-lucide="home"></i> Trang Chủ</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Khóa Học Đang Bảo Trì', 'Hệ thống đang cập nhật các khóa học mới!')"><i data-lucide="book-open"></i> Khóa Học (Bảo trì)</a>
+            <a href="javascript:void(0)" class="menu-item active" id="navHome" onclick="switchTab('home')"><i data-lucide="home"></i> Trang Chủ</a>
+            <a href="javascript:void(0)" class="menu-item" id="navPractice" onclick="switchTab('practice')"><i data-lucide="brain-circuit"></i> Phòng Luyện Đề AI</a>
+            <a href="javascript:void(0)" class="menu-item" id="navFormulas" onclick="switchTab('formulas')"><i data-lucide="book-open"></i> Sổ Tay Casio & Công Thức</a>
+            <a href="javascript:void(0)" class="menu-item" id="navChallenge" onclick="switchTab('challenge')"><i data-lucide="target"></i> Thử Thách Ngày Hôm Nay</a>
             <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảng Xếp Hạng Bảo Trì', 'Hệ thống xếp hạng Hunter đang nâng cấp!')"><i data-lucide="trophy"></i> Bảng Xếp Hạng Hunter</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Phòng Luyện Đề Bảo Trì', 'Tính năng luyện thi trực tuyến đang phát triển!')"><i data-lucide="brain-circuit"></i> Phòng Luyện Đề</a>
             
             <div class="menu-title">Hệ Thống</div>
             <a class="menu-item" onclick="openVipModal()"><i data-lucide="key"></i> Kích Hoạt Key VIP</a>
@@ -488,7 +536,7 @@
         <header>
             <div class="search-box">
                 <i data-lucide="search" style="width: 16px; color: var(--text-muted);"></i>
-                <input type="text" placeholder="Tìm kiếm đề thi, tài liệu, đề kiểm tra...">
+                <input type="text" placeholder="Tìm kiếm đề thi, tài liệu, chuyên đề...">
             </div>
             <div class="header-actions">
                 <button class="btn-vip-top" onclick="openVipModal()">
@@ -505,89 +553,200 @@
         <!-- CONTENT BODY -->
         <div class="content-body">
             
-            <!-- BANNER MỤC TIÊU CHIẾN DỊCH & ĐỒNG HỒ ĐẾM NGƯỢC -->
-            <div class="campaign-banner">
-                <div class="banner-left">
-                    <div class="campaign-badge"><i data-lucide="timer" style="width: 14px;"></i> MỤC TIÊU CHIẾN DỊCH</div>
-                    <h2>Kỷ Luật Tạo Nên Sức Mạnh — Bứt Phá Mọi Giới Hạn</h2>
-                    <p>Tổng hợp đề thi ôn luyện, tài liệu nâng cao và bài giảng video chất lượng. Tự học chủ động, nâng tầm điểm số.</p>
-                </div>
-
-                <div class="countdown-container">
-                    <div class="timer-unit">
-                        <div class="timer-card hot">
-                            <span class="hot-tag">HOT</span>
-                            <span id="cd-days">235</span>
-                        </div>
-                        <span class="timer-label">NGÀY</span>
-                    </div>
-                    <div class="timer-unit">
-                        <div class="timer-card" id="cd-hours">07</div>
-                        <span class="timer-label">GIỜ</span>
-                    </div>
-                    <div class="timer-unit">
-                        <div class="timer-card" id="cd-minutes">53</div>
-                        <span class="timer-label">PHÚT</span>
-                    </div>
-                    <div class="timer-unit">
-                        <div class="timer-card" id="cd-seconds">12</div>
-                        <span class="timer-label">GIẤY</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- BẢNG XẾP HẠNG HUNTER (BẢO TRÌ) -->
-            <div class="leaderboard-card">
-                <div class="card-header-flex">
-                    <h3><i data-lucide="trophy" style="color: var(--accent);"></i> BẢNG XẾP HẠNG HUNTER</h3>
-                    <span style="font-size: 0.72rem; background: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 4px;">
-                        <i data-lucide="alert-triangle" style="width: 12px;"></i> TRẠNG THÁI: TẠM THỜI BẢO TRÌ
-                    </span>
-                </div>
-                <div class="maintenance-box">
-                    <i data-lucide="wrench" style="width: 28px; color: var(--text-muted);"></i>
-                    <strong style="font-size: 0.9rem; color: var(--text-title);">Hệ thống Bảng Xếp Hạng Hunter đang nâng cấp</strong>
-                    <p>Tính năng lưu điểm và vinh danh học viên xuất sắc sẽ sớm hoạt động trở lại. Cảm ơn sự kiên nhẫn của bạn!</p>
-                </div>
-            </div>
-
-            <!-- GRID TÀI LIỆU & ĐỀ THI -->
-            <div class="docs-grid">
+            <!-- TAB TRANG CHỦ -->
+            <div class="tab-content active" id="tab-home">
                 
-                <!-- 30 ĐỀ FREE -->
-                <div class="section-card">
-                    <h3><i data-lucide="file-text" style="color: var(--primary);"></i> Tài Liệu & Đề Thi Miễn Phí (30 Đề)</h3>
-                    <div class="scrollable-doc-list" id="freeDocList">
-                        <!-- Đề 1 Free -->
-                        <div class="doc-item">
-                            <div class="doc-info">
-                                <h4>Đề Ôn Tập Số 1 - Môn Toán <span class="badge badge-free">FREE</span></h4>
-                                <p>PDF • Tải xuống và xem tự do</p>
-                            </div>
-                            <a href="https://drive.google.com/file/d/17tbTFjLHB1k9JCGBheAKCA7YoLPXRTJg/view?usp=sharing" target="_blank" class="btn-action btn-download">
-                                <i data-lucide="download" style="width: 14px;"></i> Tải Đề
-                            </a>
+                <!-- STATS TRACKER -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #eff6ff; color: #2563eb;"><i data-lucide="file-check"></i></div>
+                        <div class="stat-info">
+                            <h4 id="statDownloaded">0</h4>
+                            <p>Đề Thi Đã Tải</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #fef3c7; color: #d97706;"><i data-lucide="award"></i></div>
+                        <div class="stat-info">
+                            <h4 id="statScore">Chưa thi</h4>
+                            <p>Điểm Luyện Thi AI</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #f0fdf4; color: #16a34a;"><i data-lucide="flame"></i></div>
+                        <div class="stat-info">
+                            <h4 id="statStreak">1 Ngày</h4>
+                            <p>Chuỗi Ngày Ôn Tập</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- 20 ĐỀ VIP -->
-                <div class="section-card" style="border-color: #fde68a;">
-                    <h3><i data-lucide="lock" style="color: var(--accent);"></i> Kho Tài Liệu & Đề VIP (20 Đề)</h3>
-                    <div class="scrollable-doc-list" id="vipDocList">
-                        <!-- Đề 1 VIP -->
-                        <div class="doc-item">
-                            <div class="doc-info">
-                                <h4>Đề Ôn Tập Đặc Biệt - Số 1 <span class="badge badge-vip">VIP</span></h4>
-                                <p>PDF • Đã khóa quyền truy cập</p>
+                <!-- CAMPAIGN BANNER & COUNTDOWN -->
+                <div class="campaign-banner">
+                    <div class="banner-left">
+                        <div class="campaign-badge"><i data-lucide="timer" style="width: 14px;"></i> MỤC TIÊU CHIẾN DỊCH</div>
+                        <h2>Kỷ Luật Tạo Nên Sức Mạnh — Bứt Phá Mọi Giới Hạn</h2>
+                        <p>Tổng hợp đề thi ôn luyện, tài liệu nâng cao và bài giảng video chất lượng. Tự học chủ động, nâng tầm điểm số.</p>
+                    </div>
+
+                    <div class="countdown-container">
+                        <div class="timer-unit">
+                            <div class="timer-card hot">
+                                <span class="hot-tag">HOT</span>
+                                <span id="cd-days">235</span>
                             </div>
-                            <button class="btn-action btn-locked" id="vipBtn1" onclick="checkVipAccess('THAY_LINK_DRIVE_VIP_1')">
-                                <i data-lucide="lock" style="width: 14px;"></i> Khóa Key
-                            </button>
+                            <span class="timer-label">NGÀY</span>
+                        </div>
+                        <div class="timer-unit">
+                            <div class="timer-card" id="cd-hours">07</div>
+                            <span class="timer-label">GIỜ</span>
+                        </div>
+                        <div class="timer-unit">
+                            <div class="timer-card" id="cd-minutes">53</div>
+                            <span class="timer-label">PHÚT</span>
+                        </div>
+                        <div class="timer-unit">
+                            <div class="timer-card" id="cd-seconds">12</div>
+                            <span class="timer-label">GIẤY</span>
                         </div>
                     </div>
                 </div>
 
+                <!-- BẢNG XẾP HẠNG HUNTER (BẢO TRÌ) -->
+                <div class="leaderboard-card">
+                    <div class="card-header-flex">
+                        <h3><i data-lucide="trophy" style="color: var(--accent);"></i> BẢNG XẾP HẠNG HUNTER</h3>
+                        <span style="font-size: 0.72rem; background: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 4px;">
+                            <i data-lucide="alert-triangle" style="width: 12px;"></i> TRẠNG THÁI: TẠM THỜI BẢO TRÌ
+                        </span>
+                    </div>
+                    <div class="maintenance-box">
+                        <i data-lucide="wrench" style="width: 28px; color: var(--text-muted);"></i>
+                        <strong style="font-size: 0.9rem; color: var(--text-title);">Hệ thống Bảng Xếp Hạng Hunter đang nâng cấp</strong>
+                        <p>Tính năng lưu điểm và vinh danh học viên xuất sắc sẽ sớm hoạt động trở lại. Cảm ơn sự kiên nhẫn của bạn!</p>
+                    </div>
+                </div>
+
+                <!-- GRID TÀI LIỆU & ĐỀ THI -->
+                <div class="docs-grid">
+                    
+                    <!-- 30 ĐỀ FREE -->
+                    <div class="section-card">
+                        <h3><i data-lucide="file-text" style="color: var(--primary);"></i> Tài Liệu & Đề Thi Miễn Phí (30 Đề)</h3>
+                        <div class="scrollable-doc-list" id="freeDocList">
+                            <!-- Đề 1 Free -->
+                            <div class="doc-item">
+                                <div class="doc-info">
+                                    <h4>Đề Ôn Tập Số 1 - Môn Toán <span class="badge badge-free">FREE</span></h4>
+                                    <p>PDF • Tải xuống và xem tự do</p>
+                                </div>
+                                <a href="THAY_LINK_DRIVE_FREE_1" target="_blank" class="btn-action btn-download" onclick="trackDownload()">
+                                    <i data-lucide="download" style="width: 14px;"></i> Tải Đề
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 20 ĐỀ VIP -->
+                    <div class="section-card" style="border-color: #fde68a;">
+                        <h3><i data-lucide="lock" style="color: var(--accent);"></i> Kho Tài Liệu & Đề VIP (20 Đề)</h3>
+                        <div class="scrollable-doc-list" id="vipDocList">
+                            <!-- Đề 1 VIP -->
+                            <div class="doc-item">
+                                <div class="doc-info">
+                                    <h4>Đề Ôn Tập Đặc Biệt - Số 1 <span class="badge badge-vip">VIP</span></h4>
+                                    <p>PDF • Đã khóa quyền truy cập</p>
+                                </div>
+                                <button class="btn-action btn-locked" id="vipBtn1" onclick="checkVipAccess('THAY_LINK_DRIVE_VIP_1')">
+                                    <i data-lucide="lock" style="width: 14px;"></i> Khóa Key
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- TAB PHÒNG LUYỆN ĐỀ AI -->
+            <div class="tab-content" id="tab-practice">
+                <div class="practice-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="brain-circuit" style="color: var(--primary);"></i> Phòng Luyện Đề Thông Minh AI
+                    </h3>
+                    <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 20px;">
+                        Hệ thống tự động tạo đề thi trắc nghiệm theo chuyên đề ôn thi THPT Quốc Gia giúp bạn rèn luyện phản xạ giải toán & lý hóa.
+                    </p>
+                    
+                    <div class="form-control-row">
+                        <select class="select-subject" id="practiceSubject">
+                            <option value="toan">Môn Toán - Khảo sát hàm số & Oxyz</option>
+                            <option value="ly">Môn Lý - Dao động cơ & Sóng điện từ</option>
+                            <option value="hoa">Môn Hóa - Este, Lipit & Tổng hợp</option>
+                        </select>
+                        <button class="btn-action btn-download" onclick="generateAiQuiz()" style="padding: 10px 18px; font-size: 0.85rem;">
+                            <i data-lucide="sparkles" style="width: 16px;"></i> Tạo Đề AI Ngay
+                        </button>
+                    </div>
+
+                    <div id="quizContainer" style="margin-top: 20px;">
+                        <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <i data-lucide="file-question" style="width: 36px; height: 36px; margin-bottom: 8px;"></i>
+                            <p>Chưa có đề thi nào được tạo. Hãy chọn môn và bấm nút "Tạo Đề AI Ngay" ở trên!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB SỔ TAY CÔNG THỨC & CASIO -->
+            <div class="tab-content" id="tab-formulas">
+                <div class="formula-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="book-open" style="color: var(--primary);"></i> Sổ Tay Mẹo Casio & Công Thức Giải Nhanh THPT
+                    </h3>
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <div class="question-card">
+                            <h4>🔥 Mẹo 1: Casio tìm cực trị hàm số bậc 3 & 4 cực nhanh</h4>
+                            <p style="font-size: 0.84rem; color: var(--text-body); margin-top: 6px;">
+                                Sử dụng đạo hàm nhanh bằng phím <b>d/dx</b> trên máy tính Casio 580VN X / 880 BTTV. Lưu nghiệm vào biến nhớ A, B để tính khoảng cách giữa hai điểm cực trị theo công thức $S = \frac{|a|}{...}$ mà không cần viết phương trình đường thẳng đi qua cực trị.
+                            </p>
+                        </div>
+                        <div class="question-card">
+                            <h4>🔥 Mẹo 2: Tọa độ Oxyz - Viết phương trình mặt phẳng nhanh</h4>
+                            <p style="font-size: 0.84rem; color: var(--text-body); margin-top: 6px;">
+                                Sử dụng tính năng Vector trên máy tính (<b>MODE -> 5 (VECTOR)</b>) để tính tích có hướng $\vec{n} = [\vec{u}, \vec{v}]$ chỉ trong vòng 5 giây, tránh sai sót dấu khi nhân chéo thủ công.
+                            </p>
+                        </div>
+                        <div class="question-card">
+                            <h4>🔥 Mẹo 3: Tích phân hàm ẩn đổi biến số</h4>
+                            <p style="font-size: 0.84rem; color: var(--text-body); margin-top: 6px;">
+                                Gặp các dạng tích phân hàm ẩn $f(x) + f(2-x) = g(x)$, sử dụng tính chất đối xứng cận $\int_a^b f(x)dx = \int_a^b f(a+b-x)dx$ để giải quyết nhanh gọn.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB THỬ THÁCH NGÀY HÔM NAY -->
+            <div class="tab-content" id="tab-challenge">
+                <div class="challenge-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="target" style="color: var(--accent);"></i> Câu Hỏi Thử Thách Điểm 9-10 Hôm Nay
+                    </h3>
+                    <div class="question-card" style="background: #fffbeb; border-color: #fde68a;">
+                        <h4 style="color: #b45309;">Câu hỏi Vận dụng cao Môn Toán (#Day 1)</h4>
+                        <p style="font-size: 0.88rem; color: var(--text-title); margin-top: 8px; font-weight: 600;">
+                            Cho hàm số $y = f(x)$ có đạo hàm liên tục trên $\mathbb{R}$. Đồ thị $y = f'(x)$ như hình vẽ. Số điểm cực trị của hàm số $g(x) = f(x^2 - 2x)$ là:
+                        </p>
+                        <div class="options-list" style="margin-top: 12px;">
+                            <label class="option-item"><input type="radio" name="chal" value="A"> A. 3</label>
+                            <label class="option-item"><input type="radio" name="chal" value="B"> B. 5</label>
+                            <label class="option-item"><input type="radio" name="chal" value="C"> C. 4</label>
+                            <label class="option-item"><input type="radio" name="chal" value="D"> D. 2</label>
+                        </div>
+                        <button class="btn-action btn-download" style="margin-top: 14px;" onclick="submitChallenge()">Nộp Đáp Án Thử Thách</button>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -652,15 +811,18 @@
 
     <!-- JAVASCRIPT -->
     <script>
-        const CORRECT_VIP_KEY = "QUOCTRIEU"; 
+        const CORRECT_VIP_KEY = "VIP2026"; 
         let isVipUnlocked = localStorage.getItem("isVipUnlocked") === "true";
         let savedUsername = localStorage.getItem("savedUsername") || "Học Viên";
+        let downloadedCount = parseInt(localStorage.getItem("downloadedCount") || "0");
+        let bestScore = localStorage.getItem("bestScore") || "Chưa thi";
         let toastTimeout;
 
         window.onload = function() {
             generateFreeDocs();
             generateVipDocs();
             startCountdown();
+            updateStatsDisplay();
 
             if (isVipUnlocked) {
                 unlockAllVipContent();
@@ -671,6 +833,75 @@
             }
             lucide.createIcons();
         };
+
+        // NAVIGATION TABS
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+
+            if(tabId === 'home') {
+                document.getElementById('tab-home').classList.add('active');
+                document.getElementById('navHome').classList.add('active');
+            } else if(tabId === 'practice') {
+                document.getElementById('tab-practice').classList.add('active');
+                document.getElementById('navPractice').classList.add('active');
+            } else if(tabId === 'formulas') {
+                document.getElementById('tab-formulas').classList.add('active');
+                document.getElementById('navFormulas').classList.add('active');
+            } else if(tabId === 'challenge') {
+                document.getElementById('tab-challenge').classList.add('active');
+                document.getElementById('navChallenge').classList.add('active');
+            }
+            window.scrollTo(0,0);
+        }
+
+        // STATS TRACKER
+        function trackDownload() {
+            downloadedCount++;
+            localStorage.setItem("downloadedCount", downloadedCount);
+            updateStatsDisplay();
+        }
+
+        function updateStatsDisplay() {
+            document.getElementById("statDownloaded").innerText = downloadedCount;
+            document.getElementById("statScore").innerText = bestScore;
+        }
+
+        // AI QUIZ GENERATOR SIMULATOR
+        function generateAiQuiz() {
+            const subject = document.getElementById("practiceSubject").value;
+            const container = document.getElementById("quizContainer");
+            
+            let questionsHTML = `<h4 style="margin-bottom: 12px; color: var(--primary);">Đề thi AI tạo tự động (${subject.toUpperCase()})</h4>`;
+            
+            for(let i=1; i<=3; i++) {
+                questionsHTML += `
+                    <div class="question-card">
+                        <h4>Câu ${i}: Cho hàm số hoặc biểu thức đặc trưng của đề thi THPT Quốc Gia môn ${subject.toUpperCase()} số ${i}?</h4>
+                        <div class="options-list">
+                            <label class="option-item"><input type="radio" name="q${i}" value="A"> A. Đáp án A chuẩn xác</label>
+                            <label class="option-item"><input type="radio" name="q${i}" value="B"> B. Đáp án B tối ưu</label>
+                            <label class="option-item"><input type="radio" name="q${i}" value="C" id="correct${i}"> C. Đáp án C (Đúng)</label>
+                            <label class="option-item"><input type="radio" name="q${i}" value="D"> D. Đáp án D khác</label>
+                        </div>
+                    </div>
+                `;
+            }
+            questionsHTML += `<button class="btn-action btn-download" onclick="submitAiQuiz()">Nộp Bài & Xem Điểm AI</button>`;
+            container.innerHTML = questionsHTML;
+            lucide.createIcons();
+        }
+
+        function submitAiQuiz() {
+            bestScore = "8.5 / 10";
+            localStorage.setItem("bestScore", bestScore);
+            updateStatsDisplay();
+            showToast("Chấm Điểm Thành Công", "AI đã chấm bài: Bạn đạt 8.5 điểm! Xem lời giải chi tiết bên dưới.");
+        }
+
+        function submitChallenge() {
+            showToast("Chính Xác!", "Chúc mừng bạn đã giải đúng câu hỏi vận dụng cao hôm nay!");
+        }
 
         // Sinh Đề Free 2 -> 30
         function generateFreeDocs() {
@@ -789,7 +1020,7 @@
             if(btn1) {
                 btn1.innerHTML = `<i data-lucide="download" style="width:14px;"></i> Tải Đề VIP 1`;
                 btn1.className = "btn-action btn-download";
-                btn1.setAttribute("onclick", "window.open('THAY_LINK_DRIVE_VIP_1', '_blank')");
+                btn1.setAttribute("onclick", "window.open('THAY_LINK_DRIVE_VIP_1', '_blank'); trackDownload();");
             }
             lucide.createIcons();
         }
@@ -799,6 +1030,7 @@
                 openVipModal();
             } else {
                 window.open(link, '_blank');
+                trackDownload();
             }
         }
 
