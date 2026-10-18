@@ -194,7 +194,7 @@
         }
 
         /* CONTENT BODY */
-        .content-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; max-width: 1280px; width: 100%; margin: 0 auto; }
+        .content-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; max-width: 1280px; width: 100%; margin: 0 auto; padding-bottom: 90px; }
 
         /* CAMPAIGN BANNER WITH COUNTDOWN */
         .campaign-banner { 
@@ -228,15 +228,15 @@
         .banner-left h2 { font-size: 1.45rem; font-weight: 800; line-height: 1.3; margin-bottom: 6px; letter-spacing: -0.3px; }
         .banner-left p { font-size: 0.85rem; opacity: 0.9; line-height: 1.5; font-weight: 500; }
 
-        /* COUNTDOWN BOX */
+        /* COUNTDOWN BOX EXACT LAYOUT */
         .countdown-container { 
             background: rgba(15, 23, 42, 0.35); 
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 14px 20px; 
-            border-radius: 16px; 
+            padding: 16px 20px; 
+            border-radius: 18px; 
             display: flex; 
-            gap: 12px; 
+            gap: 10px; 
             align-items: center;
             z-index: 2;
         }
@@ -244,20 +244,19 @@
         .timer-card { 
             background: #ffffff; 
             color: #0f172a; 
-            font-size: 1.35rem; 
+            font-size: 1.4rem; 
             font-weight: 800; 
-            width: 52px; 
-            height: 48px; 
+            width: 54px; 
+            height: 50px; 
             border-radius: 10px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
-        .timer-card.hot { background: #fbfbfe; color: #d97706; border: 2px solid #f59e0b; position: relative; }
-        .hot-tag { position: absolute; top: -8px; background: #ef4444; color: #fff; font-size: 0.55rem; font-weight: 800; padding: 1px 4px; border-radius: 4px; }
-        .timer-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: rgba(255, 255, 255, 0.8); margin-top: 4px; }
-        .timer-dots { font-size: 1.2rem; font-weight: 800; color: rgba(255, 255, 255, 0.6); margin-bottom: 14px; }
+        .timer-card.hot { background: #ffffff; color: #2563eb; border: 2px solid #f59e0b; position: relative; }
+        .hot-tag { position: absolute; top: -8px; background: #ef4444; color: #fff; font-size: 0.55rem; font-weight: 800; padding: 1px 5px; border-radius: 4px; letter-spacing: 0.5px; }
+        .timer-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: rgba(255, 255, 255, 0.9); margin-top: 6px; }
 
         /* BẢNG XẾP HẠNG HUNTER (BẢO TRÌ) */
         .leaderboard-card {
@@ -352,6 +351,40 @@
         /* GRID LAYOUT FOR DOCS */
         .docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 900px) { .docs-grid { grid-template-columns: 1fr; } .campaign-banner { flex-direction: column; text-align: center; } aside { display: none; } main { margin-left: 0; } }
+
+        /* FLOATING MUSIC PLAYER */
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 24px;
+            z-index: 50;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .music-info { display: flex; flex-direction: column; gap: 1px; }
+        .music-title { font-size: 0.78rem; font-weight: 700; color: #ffffff; }
+        .music-sub { font-size: 0.68rem; color: #94a3b8; }
+        .btn-play {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-play:hover { transform: scale(1.08); background: var(--primary-hover); }
 
         /* MODAL */
         .modal { 
@@ -477,7 +510,7 @@
                 <div class="banner-left">
                     <div class="campaign-badge"><i data-lucide="timer" style="width: 14px;"></i> MỤC TIÊU CHIẾN DỊCH</div>
                     <h2>Kỷ Luật Tạo Nên Sức Mạnh — Bứt Phá Mọi Giới Hạn</h2>
-                    <p>Chỉ còn một chút thời gian nữa thôi. Hãy tập trung, kiên trì và bứt phá giới hạn bản thân ngay hôm nay!</p>
+                    <p>Tổng hợp đề thi ôn luyện, tài liệu nâng cao và bài giảng video chất lượng. Tự học chủ động, nâng tầm điểm số.</p>
                 </div>
 
                 <div class="countdown-container">
@@ -488,19 +521,16 @@
                         </div>
                         <span class="timer-label">NGÀY</span>
                     </div>
-                    <span class="timer-dots">:</span>
                     <div class="timer-unit">
-                        <div class="timer-card" id="cd-hours">08</div>
+                        <div class="timer-card" id="cd-hours">07</div>
                         <span class="timer-label">GIỜ</span>
                     </div>
-                    <span class="timer-dots">:</span>
                     <div class="timer-unit">
-                        <div class="timer-card" id="cd-minutes">03</div>
+                        <div class="timer-card" id="cd-minutes">53</div>
                         <span class="timer-label">PHÚT</span>
                     </div>
-                    <span class="timer-dots">:</span>
                     <div class="timer-unit">
-                        <div class="timer-card" id="cd-seconds">13</div>
+                        <div class="timer-card" id="cd-seconds">12</div>
                         <span class="timer-label">GIẤY</span>
                     </div>
                 </div>
@@ -509,7 +539,7 @@
             <!-- BẢNG XẾP HẠNG HUNTER (BẢO TRÌ) -->
             <div class="leaderboard-card">
                 <div class="card-header-flex">
-                    3333333333333333333
+                    <h3><i data-lucide="trophy" style="color: var(--accent);"></i> BẢNG XẾP HẠNG HUNTER</h3>
                     <span style="font-size: 0.72rem; background: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 4px;">
                         <i data-lucide="alert-triangle" style="width: 12px;"></i> TRẠNG THÁI: TẠM THỜI BẢO TRÌ
                     </span>
@@ -562,6 +592,18 @@
 
         </div>
     </main>
+
+    <!-- MUSIC PLAYER FLOATING -->
+    <div class="music-player">
+        <button class="btn-play" id="musicToggleBtn" onclick="toggleMusic()">
+            <i data-lucide="play" id="musicPlayIcon" style="width: 16px; margin-left: 2px;"></i>
+        </button>
+        <div class="music-info">
+            <span class="music-title">Lo-fi Study Beats</span>
+            <span class="music-sub">Nhạc nền tập trung ôn thi</span>
+        </div>
+        <audio id="bgAudio" loop src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3"></audio>
+    </div>
 
     <!-- TOAST -->
     <div class="toast-notification" id="appToast">
@@ -668,11 +710,11 @@
             }
         }
 
-        // ĐỒNG HỒ ĐẾM NGƯỢC REALTIME
+        // ĐỒNG HỒ ĐẾM NGƯỢC THPT QUỐC GIA 2027 REALTIME
         function startCountdown() {
-            const targetDate = new Date("2027-06-01T00:00:00").getTime();
+            const targetDate = new Date("2027-06-25T07:30:00").getTime();
 
-            setInterval(() => {
+            function updateTimer() {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
 
@@ -687,7 +729,27 @@
                     document.getElementById("cd-minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
                     document.getElementById("cd-seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
                 }
-            }, 1000);
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        // MUSIC PLAYER TOGGLE
+        let isPlaying = false;
+        const audio = document.getElementById("bgAudio");
+        const musicBtn = document.getElementById("musicToggleBtn");
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.innerHTML = `<i data-lucide="play" style="width: 16px; margin-left: 2px;"></i>`;
+            } else {
+                audio.play();
+                musicBtn.innerHTML = `<i data-lucide="pause" style="width: 16px;"></i>`;
+            }
+            isPlaying = !isPlaying;
+            lucide.createIcons();
         }
 
         function showNotUpdatedToast(title) {
