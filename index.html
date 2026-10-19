@@ -27,6 +27,9 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-title); display: flex; min-height: 100vh; overflow-x: hidden; }
 
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .spin-icon { animation: spin 1s linear infinite; }
+
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -107,6 +110,16 @@
         .docs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 900px) { .docs-grid { grid-template-columns: 1fr; } aside { display: none; } main { margin-left: 0; } }
 
+        /* AI MODULES & PRACTICE BOX */
+        .practice-box { background: #ffffff; border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
+        .form-control-row { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
+        .select-subject { padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.88rem; background: #f8fafc; font-weight: 600; color: var(--text-title); outline: none; }
+        .question-card { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+        .question-card h4 { font-size: 0.95rem; line-height: 1.5; color: var(--text-title); margin-bottom: 10px; }
+        .options-list { display: flex; flex-direction: column; gap: 8px; }
+        .option-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+        .option-item:hover { border-color: var(--primary); background: var(--primary-light); }
+
         /* MUSIC PLAYER */
         .music-player { position: fixed; bottom: 20px; right: 24px; z-index: 50; background: #0f172a; color: #ffffff; padding: 10px 16px; border-radius: 30px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3); border: 1px solid rgba(255, 255, 255, 0.1); }
         .music-info { display: flex; flex-direction: column; gap: 1px; }
@@ -118,10 +131,13 @@
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); z-index: 100; align-items: center; justify-content: center; }
         .modal-content { background: #ffffff; border-radius: 16px; padding: 24px; width: 90%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .modal-input { width: 100%; padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; font-size: 0.88rem; outline: none; margin-bottom: 16px; }
-        .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; }
+        .modal-input { width: 100%; padding: 10px 12px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; font-size: 0.88rem; outline: none; margin-bottom: 12px; }
+        .modal-buttons { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
         .btn-cancel { background: transparent; color: var(--text-body); border: 1px solid var(--border); padding: 8px 14px; border-radius: 8px; font-weight: 600; cursor: pointer; }
         .btn-confirm { background: var(--primary); color: #ffffff; padding: 8px 16px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; }
+
+        .auth-switch { text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
+        .auth-switch a { color: var(--primary); text-decoration: none; font-weight: 700; cursor: pointer; }
 
         .toast-notification { position: fixed; bottom: -100px; left: 24px; z-index: 200; background: #0f172a; color: #ffffff; padding: 12px 16px; border-radius: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: all 0.3s ease; opacity: 0; }
         .toast-notification.show { bottom: 20px; opacity: 1; }
@@ -142,9 +158,8 @@
         <div class="menu-list">
             <div class="menu-title">Menu Chính</div>
             <a href="javascript:void(0)" class="menu-item active" id="navHome" onclick="switchTab('home')"><i data-lucide="home"></i> Trang Chủ</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảo Trì', 'Khóa Học đang trong quá trình nâng cấp!')"><i data-lucide="book-open"></i> Khóa Học (Bảo trì)</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảo Trì', 'Phòng Luyện đang trong quá trình nâng cấp!')"><i data-lucide="dumbbell"></i> Phòng Luyện</a>
-            <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảo Trì', 'Phòng Luyện Đề đang trong quá trình nâng cấp!')"><i data-lucide="brain-circuit"></i> Phòng Luyện Đề</a>
+            <a href="javascript:void(0)" class="menu-item" id="navCourses" onclick="switchTab('courses')"><i data-lucide="book-open"></i> Khóa Học (Bảo trì)</a>
+            <a href="javascript:void(0)" class="menu-item" id="navPractice" onclick="switchTab('practice')"><i data-lucide="brain-circuit"></i> Phòng Luyện Đề AI</a>
             <a href="javascript:void(0)" class="menu-item" onclick="showToast('Bảng Xếp Hạng Bảo Trì', 'Hệ thống xếp hạng Hunter đang nâng cấp!')"><i data-lucide="trophy"></i> Bảng Xếp Hạng Hunter</a>
             
             <div class="menu-title">Hệ Thống</div>
@@ -167,9 +182,9 @@
             </div>
             <div class="header-actions">
                 <button class="btn-vip-top" onclick="openVipModal()"><i data-lucide="sparkles" style="width: 16px;"></i> Nhập Key VIP</button>
-                <div class="user-profile" onclick="openLoginModal()">
+                <div class="user-profile" onclick="openAuthModal()">
                     <div class="user-avatar" id="userAvatarIcon">S</div>
-                    <span id="userNameDisplay" style="font-size: 0.85rem; font-weight: 700; color: var(--text-title);">Học Viên</span>
+                    <span id="userNameDisplay" style="font-size: 0.85rem; font-weight: 700; color: var(--text-title);">Đăng Nhập</span>
                     <i data-lucide="chevron-down" style="width: 14px; color: var(--text-muted);"></i>
                 </div>
             </div>
@@ -186,10 +201,10 @@
                     </div>
 
                     <div class="countdown-container">
-                        <div class="timer-unit"><div class="timer-card hot"><span class="hot-tag">HOT</span><span id="cd-days">235</span></div><span class="timer-label">NGÀY</span></div>
-                        <div class="timer-unit"><div class="timer-card" id="cd-hours">06</div><span class="timer-label">GIỜ</span></div>
-                        <div class="timer-unit"><div class="timer-card" id="cd-minutes">35</div><span class="timer-label">PHÚT</span></div>
-                        <div class="timer-unit"><div class="timer-card" id="cd-seconds">55</div><span class="timer-label">GIÂY</span></div>
+                        <div class="timer-unit"><div class="timer-card hot"><span class="hot-tag">HOT</span><span id="cd-days">--</span></div><span class="timer-label">NGÀY</span></div>
+                        <div class="timer-unit"><div class="timer-card" id="cd-hours">--</div><span class="timer-label">GIỜ</span></div>
+                        <div class="timer-unit"><div class="timer-card" id="cd-minutes">--</div><span class="timer-label">PHÚT</span></div>
+                        <div class="timer-unit"><div class="timer-card" id="cd-seconds">--</div><span class="timer-label">GIÂY</span></div>
                     </div>
                 </div>
 
@@ -229,10 +244,55 @@
                                     <h4>Đề Ôn Tập Đặc Biệt - Số 1 <span class="badge badge-vip">VIP</span></h4>
                                     <p>PDF • Đã khóa quyền truy cập</p>
                                 </div>
-                                <button class="btn-action btn-locked" id="vipBtn1" onclick="checkVipAccess('THAY_LINK_DRIVE_VIP_1')">
+                                <button class="btn-action btn-locked" id="vipBtn1" onclick="checkVipAccess('https://drive.google.com/file/d/17tbTFjLHB1k9JCGBheAKCA7YoLPXRTJg/view?usp=sharing')">
                                     <i data-lucide="lock" style="width: 14px;"></i> Khóa Key
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB KHÓA HỌC BẢO TRÌ -->
+            <div class="tab-content" id="tab-courses">
+                <div class="leaderboard-card">
+                    <div class="card-header-flex">
+                        <h3><i data-lucide="book-open" style="color: var(--primary);"></i> DANH SÁCH KHÓA HỌC THPT</h3>
+                        <span style="font-size: 0.72rem; background: #fee2e2; color: #dc2626; padding: 4px 10px; border-radius: 20px; font-weight: 800; display: flex; align-items: center; gap: 4px;"><i data-lucide="alert-triangle" style="width: 12px;"></i> ĐANG BẢO TRÌ</span>
+                    </div>
+                    <div class="maintenance-box">
+                        <i data-lucide="wrench" style="width: 32px; color: var(--primary);"></i>
+                        <strong style="font-size: 1rem; color: var(--text-title);">Hệ thống Khóa Học đang cập nhật nội dung mới</strong>
+                        <p>Các khóa học Video bài giảng và Luyện chuyên đề nâng cao môn Toán, Lý, Hóa đang được hoàn thiện. Vui lòng quay lại sau!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB PHÒNG LUYỆN ĐỀ AI -->
+            <div class="tab-content" id="tab-practice">
+                <div class="practice-box">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <i data-lucide="brain-circuit" style="color: var(--primary);"></i> Phòng Luyện Đề Thông Minh Gemini AI
+                    </h3>
+                    <p style="font-size: 0.85rem; color: var(--text-body); margin-bottom: 20px;">
+                        Gemini AI sẽ tự động sinh đề thi trắc nghiệm theo đúng cấu trúc thi THPT Quốc Gia của Bộ GD&ĐT.
+                    </p>
+                    
+                    <div class="form-control-row">
+                        <select class="select-subject" id="practiceSubject">
+                            <option value="Toán">Môn Toán - Hàm Số & Hình Học Oxyz</option>
+                            <option value="Vật Lý">Môn Vật Lý - Dao Động Cơ & Điện Xoay Chiều</option>
+                            <option value="Hóa Học">Môn Hóa Học - Este, Lipit & Kim Loại</option>
+                        </select>
+                        <button class="btn-action btn-download" onclick="generateAiQuiz()" style="padding: 10px 18px; font-size: 0.85rem;">
+                            <i data-lucide="sparkles" style="width: 16px;"></i> Tạo Đề Gemini AI Ngay
+                        </button>
+                    </div>
+
+                    <div id="quizContainer" style="margin-top: 20px;">
+                        <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                            <i data-lucide="file-question" style="width: 36px; height: 36px; margin-bottom: 8px;"></i>
+                            <p>Chưa có đề thi nào được tạo. Hãy chọn môn và bấm nút "Tạo Đề Gemini AI Ngay" ở trên!</p>
                         </div>
                     </div>
                 </div>
@@ -253,16 +313,55 @@
     <div class="modal" id="vipModal">
         <div class="modal-content">
             <div class="modal-header"><h3><i data-lucide="key" style="color: var(--accent);"></i> Kích Hoạt Key VIP</h3><i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeVipModal()"></i></div>
-            <div class="modal-body"><p>Nhập mã Key VIP do Admin cấp qua Zalo <strong>0866702086</strong> để mở khóa trọn bộ tài liệu VIP.</p><input type="text" class="modal-input" id="vipKeyInput" placeholder="Nhập mã VIP của bạn vào đây..."></div>
+            <div class="modal-body"><p>Nhập mã Key VIP do Admin cấp qua Zalo <strong>0866702086</strong> để mở khóa trọn bộ tài liệu VIP.</p><input type="text" class="modal-input" id="vipKeyInput" placeholder="Ví dụ: QUOCTRIEU..."></div>
             <div class="modal-buttons"><button class="btn-cancel" onclick="closeVipModal()">Hủy</button><button class="btn-confirm" onclick="submitVipKey()">Kích Hoạt</button></div>
         </div>
     </div>
 
-    <div class="modal" id="loginModal">
+    <!-- MODAL ĐĂNG NHẬP / ĐĂNG KÝ HỌC VIÊN -->
+    <div class="modal" id="authModal">
         <div class="modal-content">
-            <div class="modal-header"><h3><i data-lucide="user" style="color: var(--primary);"></i> Tên Học Viên</h3><i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeLoginModal()"></i></div>
-            <div class="modal-body"><p>Nhập tên hiển thị của bạn trên hệ thống:</p><input type="text" class="modal-input" id="usernameInput" placeholder="Nhập tên của bạn..."></div>
-            <div class="modal-buttons"><button class="btn-cancel" onclick="closeLoginModal()">Hủy</button><button class="btn-confirm" onclick="submitLogin()">Lưu Lại</button></div>
+            <!-- FORM ĐĂNG NHẬP -->
+            <div id="loginForm">
+                <div class="modal-header">
+                    <h3><i data-lucide="log-in" style="color: var(--primary);"></i> Đăng Nhập Học Viên</h3>
+                    <i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeAuthModal()"></i>
+                </div>
+                <div class="modal-body">
+                    <input type="email" class="modal-input" id="loginEmail" placeholder="Nhập địa chỉ Gmail của bạn...">
+                    <input type="password" class="modal-input" id="loginPassword" placeholder="Nhập mật khẩu...">
+                    <div style="text-align: right; margin-bottom: 10px;">
+                        <a href="javascript:void(0)" onclick="handleForgotPassword()" style="font-size: 0.78rem; color: #ef4444; text-decoration: none; font-weight: 600;">Quên mật khẩu?</a>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn-cancel" onclick="closeAuthModal()">Hủy</button>
+                    <button class="btn-confirm" onclick="submitLogin()">Đăng Nhập</button>
+                </div>
+                <div class="auth-switch">
+                    Chưa có tài khoản? <a onclick="toggleAuthMode('register')">Đăng ký ngay</a>
+                </div>
+            </div>
+
+            <!-- FORM ĐĂNG KÝ -->
+            <div id="registerForm" style="display: none;">
+                <div class="modal-header">
+                    <h3><i data-lucide="user-plus" style="color: var(--primary);"></i> Đăng Ký Tài Khoản</h3>
+                    <i data-lucide="x" style="cursor: pointer; color: var(--text-muted);" onclick="closeAuthModal()"></i>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="modal-input" id="regName" placeholder="Nhập họ và tên...">
+                    <input type="email" class="modal-input" id="regEmail" placeholder="Nhập địa chỉ Gmail...">
+                    <input type="password" class="modal-input" id="regPassword" placeholder="Tạo mật khẩu...">
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn-cancel" onclick="closeAuthModal()">Hủy</button>
+                    <button class="btn-confirm" onclick="submitRegister()">Tạo Tài Khoản</button>
+                </div>
+                <div class="auth-switch">
+                    Đã có tài khoản? <a onclick="toggleAuthMode('login')">Đăng nhập</a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -289,20 +388,31 @@
         // MÃ KEY VIP:
         const CORRECT_VIP_KEY = "QUOCTRIEU"; 
 
+        // DÁN API KEY CHUẨN CỦA GOOGLE AI STUDIO VÀO ĐÂY (BẮT ĐẦU BẰNG AIzaSy...):
+        const GEMINI_API_KEY = "DAN_API_KEY_CUA_BAN_VAO_DAY";
+
         let isVipUnlocked = localStorage.getItem("isVipUnlocked") === "true";
-        let savedUsername = localStorage.getItem("savedUsername") || "Học Viên";
+        let currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
         let toastTimeout;
 
         window.onload = function() {
             generateFreeDocs();
             generateVipDocs();
+            startRealTimeCountdown();
             if (isVipUnlocked) unlockAllVipContent();
-            if (savedUsername) {
-                document.getElementById("userNameDisplay").innerText = savedUsername;
-                document.getElementById("userAvatarIcon").innerText = savedUsername.charAt(0).toUpperCase();
-            }
+            updateUserDisplay();
             lucide.createIcons();
         };
+
+        function updateUserDisplay() {
+            if (currentUser) {
+                document.getElementById("userNameDisplay").innerText = currentUser.name;
+                document.getElementById("userAvatarIcon").innerText = currentUser.name.charAt(0).toUpperCase();
+            } else {
+                document.getElementById("userNameDisplay").innerText = "Đăng Nhập";
+                document.getElementById("userAvatarIcon").innerText = "?";
+            }
+        }
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -310,8 +420,223 @@
             if(tabId === 'home') {
                 document.getElementById('tab-home').classList.add('active');
                 document.getElementById('navHome').classList.add('active');
+            } else if(tabId === 'courses') {
+                document.getElementById('tab-courses').classList.add('active');
+                document.getElementById('navCourses').classList.add('active');
+            } else if(tabId === 'practice') {
+                document.getElementById('tab-practice').classList.add('active');
+                document.getElementById('navPractice').classList.add('active');
             }
             window.scrollTo(0,0);
+        }
+
+        // ĐỒNG HỒ ĐẾM NGƯỢC CHẠY THEO THỜI GIAN THỰC (NHẢY SỐ MỖI GIÂY)
+        function startRealTimeCountdown() {
+            const examDate = new Date("2027-06-25T07:30:00").getTime();
+
+            function update() {
+                const now = new Date().getTime();
+                const distance = examDate - now;
+
+                if (distance > 0) {
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    document.getElementById("cd-days").innerText = days;
+                    document.getElementById("cd-hours").innerText = String(hours).padStart(2, '0');
+                    document.getElementById("cd-minutes").innerText = String(minutes).padStart(2, '0');
+                    document.getElementById("cd-seconds").innerText = String(seconds).padStart(2, '0');
+                }
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        // QUẢN LÝ ĐĂNG NHẬP / ĐĂNG KÝ / QUÊN MẬT KHẨU
+        function openAuthModal() {
+            if (currentUser) {
+                if (confirm(`Bạn đang đăng nhập với tên "${currentUser.name}". Bạn có muốn đăng xuất không?`)) {
+                    localStorage.removeItem("currentUser");
+                    currentUser = null;
+                    updateUserDisplay();
+                    showToast("Đã Đăng Xuất", "Bạn đã đăng xuất thành công!");
+                }
+            } else {
+                document.getElementById("authModal").style.display = "flex";
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById("authModal").style.display = "none";
+        }
+
+        function toggleAuthMode(mode) {
+            if (mode === 'register') {
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("registerForm").style.display = "block";
+            } else {
+                document.getElementById("registerForm").style.display = "none";
+                document.getElementById("loginForm").style.display = "block";
+            }
+        }
+
+        function submitRegister() {
+            const name = document.getElementById("regName").value.trim();
+            const email = document.getElementById("regEmail").value.trim().toLowerCase();
+            const password = document.getElementById("regPassword").value;
+
+            if (!name || !email || !password) {
+                alert("Vui lòng điền đầy đủ các thông tin!");
+                return;
+            }
+
+            if (!email.endsWith("@gmail.com")) {
+                alert("Vui lòng sử dụng địa chỉ Gmail hợp lệ (VD: abc@gmail.com)!");
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem("usersList") || "[]");
+            if (users.some(u => u.email === email)) {
+                alert("Gmail này đã được đăng ký tài khoản rồi!");
+                return;
+            }
+
+            users.push({ name, email, password });
+            localStorage.setItem("usersList", JSON.stringify(users));
+
+            currentUser = { name, email };
+            localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+            updateUserDisplay();
+            closeAuthModal();
+            showToast("Thành Công", `Chào mừng ${name} đã đăng ký tài khoản!`);
+        }
+
+        function submitLogin() {
+            const email = document.getElementById("loginEmail").value.trim().toLowerCase();
+            const password = document.getElementById("loginPassword").value;
+
+            if (!email || !password) {
+                alert("Vui lòng nhập đầy đủ Gmail và Mật khẩu!");
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem("usersList") || "[]");
+            let user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                currentUser = { name: user.name, email: user.email };
+                localStorage.setItem("currentUser", JSON.stringify(currentUser));
+                updateUserDisplay();
+                closeAuthModal();
+                showToast("Đăng Nhập Thành Công", `Xin chào ${user.name}!`);
+            } else {
+                alert("Gmail hoặc Mật khẩu không chính xác!");
+            }
+        }
+
+        function handleForgotPassword() {
+            alert("⚠️ Vui lòng liên hệ Admin qua Zalo 0866702086 để hỗ trợ cấp lại mật khẩu!");
+        }
+
+        // TÍCH HỢP GEMINI AI SINH ĐỀ VÀ GIẢI BÀI
+        async function callGemini(promptText) {
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+            });
+            const data = await response.json();
+            if (data.error) {
+                throw new Error(data.error.message);
+            }
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        async function generateAiQuiz() {
+            const subject = document.getElementById("practiceSubject").value;
+            const container = document.getElementById("quizContainer");
+
+            container.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: var(--primary);">
+                    <i data-lucide="loader-2" class="spin-icon" style="width: 36px; height: 36px; margin-bottom: 8px;"></i>
+                    <p style="font-weight: 700;">Gemini AI đang tạo đề thi chuẩn cấu trúc THPT môn ${subject}...</p>
+                </div>
+            `;
+            lucide.createIcons();
+
+            const promptText = `Hãy tạo 3 câu hỏi trắc nghiệm ôn thi THPT Quốc Gia môn ${subject}.
+            Yêu cầu BẮT BUỘC trả về DUY NHẤT định dạng JSON thô (không có cặp dấu markdown \`\`\`json hay \`\`\`) theo cấu trúc mảng:
+            [
+              {
+                "question": "Nội dung câu hỏi...",
+                "options": ["A. ...", "B. ...", "C. ...", "D. ..."],
+                "correctIndex": 0,
+                "explanation": "Lời giải chi tiết..."
+              }
+            ]`;
+
+            try {
+                let rawText = await callGemini(promptText);
+                rawText = rawText.replace(/```json/g, "").replace(/```/g, "").trim();
+                const questions = JSON.parse(rawText);
+
+                let questionsHTML = `<h4 style="margin-bottom: 14px; color: var(--primary); font-weight: 800;">✨ Đề thi AI vừa khởi tạo (Môn ${subject})</h4>`;
+                
+                questions.forEach((q, idx) => {
+                    questionsHTML += `
+                        <div class="question-card" id="q-box-${idx}">
+                            <h4 style="font-size: 0.95rem; line-height: 1.5; color: var(--text-title);">Câu ${idx + 1}: ${q.question}</h4>
+                            <div class="options-list" style="margin-top: 10px;">
+                                ${q.options.map((opt, oIdx) => `
+                                    <label class="option-item">
+                                        <input type="radio" name="ai_q_${idx}" value="${oIdx}">
+                                        \${opt}
+                                    </label>
+                                `).join('')}
+                            </div>
+                            <div id="exp-${idx}" style="display:none; margin-top:12px; padding:10px; background:#eff6ff; border-left:4px solid #2563eb; border-radius:6px; font-size:0.83rem; color:#1e3a8a;">
+                                <strong>💡 Lời giải chi tiết:</strong> ${q.explanation}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                questionsHTML += `
+                    <button class="btn-action btn-download" onclick='checkAiQuizAnswers(${JSON.stringify(questions).replace(/'/g, "&apos;")})' style="margin-top: 10px; padding: 10px 20px;">
+                        <i data-lucide="check-circle" style="width: 16px;"></i> Nộp Bài & Chấm Điểm AI
+                    </button>
+                `;
+
+                container.innerHTML = questionsHTML;
+                lucide.createIcons();
+
+            } catch (err) {
+                container.innerHTML = `<div style="text-align: center; padding: 20px; color: #ef4444;"><p>❌ Lỗi kết nối AI: ${err.message}. Hãy dán đúng API Key bắt đầu bằng AIzaSy... vào dòng GEMINI_API_KEY!</p></div>`;
+            }
+        }
+
+        function checkAiQuizAnswers(questions) {
+            let score = 0;
+            questions.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="ai_q_${idx}"]:checked`);
+                const expBox = document.getElementById(`exp-${idx}`);
+                expBox.style.display = "block";
+
+                if (selected && parseInt(selected.value) === q.correctIndex) {
+                    score++;
+                    document.getElementById(`q-box-${idx}`).style.borderColor = "#22c55e";
+                } else {
+                    document.getElementById(`q-box-${idx}`).style.borderColor = "#ef4444";
+                }
+            });
+
+            const finalPoint = ((score / questions.length) * 10).toFixed(1);
+            showToast("Kết Quả Làm Bài AI", `Bạn đạt ${finalPoint}/10 điểm! Đã mở hiển thị lời giải chi tiết bên dưới.`);
         }
 
         function generateFreeDocs() {
@@ -372,8 +697,6 @@
 
         function openVipModal() { document.getElementById("vipModal").style.display = "flex"; }
         function closeVipModal() { document.getElementById("vipModal").style.display = "none"; }
-        function openLoginModal() { document.getElementById("loginModal").style.display = "flex"; }
-        function closeLoginModal() { document.getElementById("loginModal").style.display = "none"; }
 
         function submitVipKey() {
             const userKey = document.getElementById("vipKeyInput").value.trim();
@@ -399,16 +722,6 @@
         function checkVipAccess(link) {
             if (!isVipUnlocked) openVipModal();
             else window.open(link, '_blank');
-        }
-
-        function submitLogin() {
-            const name = document.getElementById("usernameInput").value.trim();
-            if (name) {
-                localStorage.setItem("savedUsername", name);
-                document.getElementById("userNameDisplay").innerText = name;
-                document.getElementById("userAvatarIcon").innerText = name.charAt(0).toUpperCase();
-                closeLoginModal();
-            }
         }
     </script>
 </body>
